@@ -1,0 +1,80 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+
+public class InputMenu : MonoBehaviour {
+
+    Coroutine fadeCoroutine;
+
+    public float fadeDuration = 0.5f;
+
+    public RectTransform Tr { private set; get; }
+    public Image MyImage { private set; get; }
+
+    void Start()
+    {
+
+        Tr = GetComponent<RectTransform>();
+        MyImage = GetComponent<Image>();
+
+        MyImage.color = new Color(1, 1, 1, 0);
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            if (fadeCoroutine != null)
+                StopCoroutine(fadeCoroutine);
+
+            fadeCoroutine = StartCoroutine(FadeIn(fadeDuration));
+        }	
+        else if (Input.GetKeyUp(KeyCode.F11))
+        {
+            if (fadeCoroutine != null)
+                StopCoroutine(fadeCoroutine);
+
+            fadeCoroutine = StartCoroutine(FadeOut(fadeDuration));
+        }
+	}
+
+    IEnumerator FadeIn(float duration)
+    {
+        float t = MyImage.color.a;
+        float startOffset = duration * t;
+        float startTime = Time.time;
+        float timePassed = 0;
+
+        while (startTime + duration > Time.time + startOffset)
+        {
+            timePassed += Time.deltaTime;
+            t = ((Time.time + startOffset) - startTime) / duration;
+
+            MyImage.color = new Color(1, 1, 1, t);
+            yield return null;
+        }
+        MyImage.color = new Color(1, 1, 1, 1);
+
+    }
+
+    IEnumerator FadeOut(float duration)
+    {
+        float t = 1 - MyImage.color.a;
+        float startTime = Time.time;
+        float startOffset = duration * t;
+        float timePassed = 0;
+
+        while (startTime + duration > Time.time + startOffset)
+        {
+            timePassed += Time.deltaTime;
+            t = 1 - ((Time.time + startOffset) - startTime) / duration;
+
+            MyImage.color = new Color(1, 1, 1, t);
+            yield return null;
+        }
+        MyImage.color = new Color(1, 1, 1, 0);
+
+    }
+}
