@@ -23,6 +23,12 @@ public class ActionHolder : MonoBehaviour {
         main = this;
     }
 
+    public static void ResetCards()
+    {
+        main.player1Tiles.ForEach(n => n.FadeOut());
+        main.player2Tiles.ForEach(n => n.FadeOut());
+    }
+
     public static void Reveal(int steps)
     {
         main.player1Tiles[steps - 1].CurrentCard.Reveal();

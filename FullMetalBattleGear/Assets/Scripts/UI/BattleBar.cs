@@ -68,36 +68,9 @@ public class BattleBar : MonoBehaviour {
 
     }
 
-
-
-
     private void OnValidate()
     {
         GetComponent<Image>().color = barColor;
-        /*
-        int a = transform.childCount;
-        for (int i = 0; i < a; i++)
-        {
-            DestroyImmediate(transform.GetChild(i).gameObject);
-        }
-
-        Vector2 endPos = transform.position;
-        endPos.x += 1056f;
-
-        float distance = endPos.x - startPos.x;
-        
-        for (int i = 0; i < actions; i++)
-        {
-            float b = (1f / actions);
-
-            b *= i;
-            b *= distance;
-        
-            endPos.x = transform.position.x + 1056f;
-            endPos.x -= b;
-            
-            Instantiate(spacingBar, endPos, Quaternion.identity, this.transform);
-        }*/
     }
 
     IEnumerator FightSequence(float duration, int actions)
@@ -129,6 +102,10 @@ public class BattleBar : MonoBehaviour {
             }
             yield return null;
         }
+
+        yield return new WaitForSeconds(2f);
+
+        ActionHolder.ResetCards();
     }
 
     IEnumerator SpriteFlash(float duration)

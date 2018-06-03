@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public HealthBar healthBar;
+
     public int StartingGlobalHealth = 150;
     public int CurrentGlobalHealth;
     public int StartingHeadHealth = 40;
@@ -12,8 +14,7 @@ public class PlayerHealth : MonoBehaviour
     public int CurrentLegsHealth;
     public int StartingArmsHealth = 30;
     public int CurrentArmsHealth;
-
-    // Use this for initialization
+    
     void Start()
     {
         CurrentGlobalHealth = StartingGlobalHealth;
@@ -24,6 +25,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void getHit(char zoneHit, int DamageTaken)
     {
+
         switch (zoneHit)
         {
             case 'a': // arms hit
@@ -48,5 +50,7 @@ public class PlayerHealth : MonoBehaviour
                 // Nothing happen
                 break;
         }
+
+        healthBar.UpdateHealth(CurrentGlobalHealth / StartingGlobalHealth);
     }
 }

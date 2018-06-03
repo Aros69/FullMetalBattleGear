@@ -15,7 +15,8 @@ public class Card : MonoBehaviour {
         guardPunch,
         guardKick,
         guardHead,
-        guardLazer
+        guardLazer,
+        nothing
     }
 
     public CardType cardType;
@@ -73,6 +74,8 @@ public class Card : MonoBehaviour {
                 break;
             case CardType.guardLazer:
                 output = "GL";
+                break;
+            case CardType.nothing:
                 break;
         }
         return output;
