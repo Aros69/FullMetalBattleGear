@@ -34,8 +34,8 @@ public class ActionHolder : MonoBehaviour {
 
     public static void Reveal(int steps)
     {
-        main.player1Tiles[steps - 1].CurrentCard.Reveal();
-        main.player2Tiles[steps - 1].CurrentCard.Reveal();
+        main.player1Tiles[steps - 1].image.sprite = main.player1Tiles[steps - 1].CurrentCard.TypeIs(main.player1Tiles[steps - 1].CurrentCard.cardType);
+        main.player2Tiles[steps - 1].image.sprite = main.player2Tiles[steps - 1].CurrentCard.TypeIs(main.player2Tiles[steps - 1].CurrentCard.cardType);
     }
 
     public void PlayerActionAdd(Card.CardType cardType, int playerId)

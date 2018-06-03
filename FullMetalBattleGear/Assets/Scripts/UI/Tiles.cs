@@ -13,6 +13,10 @@ public class Tiles : MonoBehaviour {
 
     Image cardImage;
 
+    Sprite baseSprite;
+    public Image image { get; set; }
+
+
     private void Start()
     {
         Tr = GetComponent<RectTransform>();
@@ -22,9 +26,11 @@ public class Tiles : MonoBehaviour {
         RectTransform cardTr = GetComponent<RectTransform>();
         cardTr.anchoredPosition = Tr.anchoredPosition;
 
-
         cardImage = CurrentCard.GetComponent<Image>();
         cardImage.color = new Color(1, 1, 1, 0);
+
+        image = GetComponent<Image>();
+        baseSprite = image.sprite;
     }
 
     void Update () {
@@ -35,16 +41,17 @@ public class Tiles : MonoBehaviour {
 
     public void AddCard(Card.CardType cardType)
     {
+
+        image.sprite = CurrentCard.TypeIs(Card.CardType.nothing);
         CurrentCard.cardType = cardType;
-        cardImage.color = new Color(1, 1, 1, 1);
     }
 
     public void FadeOut()
     {
 
-        CurrentCard.MyText.text = "";
-        StartCoroutine(FadeOut(cardDisapeareanceDuration));
+        image.sprite = baseSprite;
 
+     //   StartCoroutine(FadeOut(cardDisapeareanceDuration));
     }
 
     IEnumerator FadeOut(float duration)

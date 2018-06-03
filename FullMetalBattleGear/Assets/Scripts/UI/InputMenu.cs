@@ -20,6 +20,8 @@ public class InputMenu : MonoBehaviour {
         MyImages = new List<Image>(GetComponentsInChildren<Image>());
         
         MyImages.ForEach(n => n.color = new Color(1, 1, 1, 0));
+
+
     }
 
     // Update is called once per frame

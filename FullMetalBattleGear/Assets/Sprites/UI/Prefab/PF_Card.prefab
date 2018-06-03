@@ -57,6 +57,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0025da95b79973244a9b8e4781222432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  littlePunch: {fileID: 21300000, guid: 5c9f1499bb1d26e46b86825b22391316, type: 3}
+  bigPunch: {fileID: 21300000, guid: 98357b6fe2dfcb144a8c4973f76c390c, type: 3}
+  littleKick: {fileID: 21300000, guid: adc1a9ec0af19594d9f07c6c5e5e2fe5, type: 3}
+  bigKick: {fileID: 21300000, guid: 35944b9c68609724f88d22a8df0810ee, type: 3}
+  lazer: {fileID: 21300000, guid: 598da5d07b7805244bd28305cda6f7a2, type: 3}
+  guardPunch: {fileID: 21300000, guid: e643a09e015206b4a9577dc83790df88, type: 3}
+  guardKick: {fileID: 21300000, guid: 437f4c947aef40249ab6d86124c69f7d, type: 3}
+  guardLazer: {fileID: 21300000, guid: 12f30703a8c11f948bb5bb662b8be31f, type: 3}
+  nothing: {fileID: 21300000, guid: 02851a463d9d46f4997c4d1dc6a80b5d, type: 3}
   cardType: 0
 --- !u!114 &114388273307599090
 MonoBehaviour:
@@ -110,7 +119,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 9766e1b714704bd4982131ece9f6cde8, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
