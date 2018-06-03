@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class FightManager : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class FightManager : MonoBehaviour
     static public char attackPlayer2 = ' ';
 
     public static FightManager main;
-
+    private Color GG;
     private GameObject[] players;
     private PlayerHealth Player1Health;
     private PlayerHealth Player2Health;
@@ -29,6 +30,7 @@ public class FightManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        GG = GameObject.FindGameObjectWithTag("Finish").GetComponent<Text>().material.color;
         players = GameObject.FindGameObjectsWithTag("Player");
         if (players[0].name == "Player1")
         {
@@ -225,9 +227,12 @@ public class FightManager : MonoBehaviour
             attackPlayer2 = ' ';
         }
 
-        /*if (Player1Health.CurrentGlobalHealth <= 0 == Player2Health.CurrentGlobalHealth <= 0)
+        /*GG.a = 1f;
+        if (Player1Health.CurrentGlobalHealth >= 0 || Player2Health.CurrentGlobalHealth >= 0 && GG.a==0f)
         {
-            SceneManager.LoadScene("StartScreen");
+            //Debug.Log("Fail");
+            
+            //T SceneManager.LoadScene("StartScreen");
         }*/
     }
 }
