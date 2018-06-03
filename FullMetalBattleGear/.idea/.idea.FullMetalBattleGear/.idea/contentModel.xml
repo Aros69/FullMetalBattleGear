@@ -19,16 +19,23 @@
             <e p="FightManager.cs" t="Include" />
           </e>
           <e p="Player" t="Include">
+            <e p="InputManager.cs" t="Include" />
             <e p="PlayerAttack.cs" t="Include" />
             <e p="PlayerHealth.cs" t="Include" />
+          </e>
+          <e p="UI" t="Include">
+            <e p="ActionHolder.cs" t="Include" />
+            <e p="BattleBar.cs" t="Include" />
+            <e p="Card.cs" t="Include" />
+            <e p="ChangeScene.cs" t="Include" />
+            <e p="InputMenu.cs" t="Include" />
+            <e p="Tiles.cs" t="Include" />
           </e>
         </e>
       </e>
       <e p="FullMetalBattleGear.sln" t="IncludeFlat" />
       <e p="Library" t="ExcludeRecursive" />
-      <e p="Temp" t="ExcludeRecursive">
-        <e p="bin" t="ExcludeRecursive" />
-      </e>
+      <e p="Temp/bin" t="ExcludeRecursive" />
       <e p="obj" t="ExcludeRecursive" />
       <e p="packages" t="ExcludeRecursive" />
     </e>

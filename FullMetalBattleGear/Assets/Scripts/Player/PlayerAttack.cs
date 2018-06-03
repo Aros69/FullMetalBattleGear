@@ -14,68 +14,120 @@ public class PlayerAttack : MonoBehaviour
     private Animator anim;
     private PlayerHealth playerHealth;
 
+    private int playerId;
+
     // Use this for initialization
     void Start()
     {
-        secondPlayer = GameObject.FindGameObjectsWithTag("Player");
+        if (name == "Player1")
+        {
+            playerId = 0;
+        }
+        else if (name == "Player2")
+        {
+            playerId = 1;
+        }
+        else
+        {
+            playerId = 2;
+        }
 
-        player2Animator = secondPlayer.GetComponent<Animator>();
+        playerHealth = GetComponent<PlayerHealth>();
         attackList = new char[baseAttackCount];
         anim = GetComponent<Animator>();
     }
 
-    void ClearState()
+    bool canDoThatAttack(char zone)
     {
-        anim.SetBool("Attack", false);
-        anim.SetBool("Hit", false);
+        switch (zone)
+        {
+            case 'a':
+                if (playerHealth.CurrentArmsHealth > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            case 'l':
+                if (playerHealth.CurrentLegsHealth > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            case 'h':
+                if (playerHealth.CurrentHeadHealth > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            case 'c':
+                return true;
+        }
+
+        return false;
     }
 
     void AttackSelection()
     {
-        // Regarder si l'attack demander est dispo avant d'accepter l'input
-        if (Input.GetButtonUp("Fire1"))
+        if (Input.GetAxis(InputManager.Input(InputKey.lt, playerId)) > 0 ||
+            Input.GetAxis(InputManager.Input(InputKey.rt, playerId)) > 0)
         {
-            attackList[realAttackCount] = FightCharTab.LittlePunch;
-            realAttackCount++;
+            if (Input.GetButtonUp(InputManager.Input(InputKey.y, playerId)) && playerHealth.CurrentHeadHealth > 0)
+            {
+                attackList[realAttackCount] = FightCharTab.GuardHead;
+                realAttackCount++;
+            }
+            else if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
+            {
+                attackList[realAttackCount] = FightCharTab.GuardPunch;
+                realAttackCount++;
+            }
+            else if (Input.GetButtonUp(InputManager.Input(InputKey.a, playerId)) && playerHealth.CurrentLegsHealth > 0)
+            {
+                attackList[realAttackCount] = FightCharTab.GuardKick;
+                realAttackCount++;
+            }
+            else if (Input.GetButtonUp(InputManager.Input(InputKey.b, playerId)))
+            {
+                attackList[realAttackCount] = FightCharTab.GuardLaser;
+                realAttackCount++;
+            }
         }
-        else if (Input.GetButtonUp("Fire2"))
+        else
         {
-            attackList[realAttackCount] = FightCharTab.BigPunch;
-            realAttackCount++;
+            if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
+            {
+                attackList[realAttackCount] = FightCharTab.LittlePunch;
+                realAttackCount++;
+            }
+            else if (Input.GetButtonUp(InputManager.Input(InputKey.rb, playerId)) && playerHealth.CurrentArmsHealth > 0)
+            {
+                attackList[realAttackCount] = FightCharTab.BigPunch;
+                realAttackCount++;
+            }
+            else if (Input.GetButtonUp(InputManager.Input(InputKey.a, playerId)) && playerHealth.CurrentLegsHealth > 0)
+            {
+                attackList[realAttackCount] = FightCharTab.LittleKick;
+                realAttackCount++;
+            }
+            else if (Input.GetButtonUp(InputManager.Input(InputKey.lb, playerId)) && playerHealth.CurrentLegsHealth > 0)
+            {
+                attackList[realAttackCount] = FightCharTab.BigKick;
+                realAttackCount++;
+            }
+            else if (Input.GetButtonUp(InputManager.Input(InputKey.y, playerId)) && playerHealth.CurrentHeadHealth > 0)
+            {
+                attackList[realAttackCount] = FightCharTab.Head;
+                realAttackCount++;
+            }
+            else if (Input.GetButtonUp(InputManager.Input(InputKey.b, playerId)))
+            {
+                attackList[realAttackCount] = FightCharTab.Laser;
+                realAttackCount++;
+            }
         }
-        /* else if(Input.GetButtonUp("Fire2"))
-        {
-            attackList[realAttackCount] = FightCharTab.BigPunch;
-            realAttackCount++;
-        }else if(Input.GetButtonUp("Fire2"))
-        {
-            attackList[realAttackCount] = FightCharTab.BigPunch;
-            realAttackCount++;
-        }else if(Input.GetButtonUp("Fire2"))
-        {
-            attackList[realAttackCount] = FightCharTab.BigPunch;
-            realAttackCount++;
-        }else if(Input.GetButtonUp("Fire2"))
-        {
-            attackList[realAttackCount] = FightCharTab.BigPunch;
-            realAttackCount++;
-        }else if(Input.GetButtonUp("Fire2"))
-        {
-            attackList[realAttackCount] = FightCharTab.BigPunch;
-            realAttackCount++;
-        }else if(Input.GetButtonUp("Fire2"))
-        {
-            attackList[realAttackCount] = FightCharTab.BigPunch;
-            realAttackCount++;
-        }else if(Input.GetButtonUp("Fire2"))
-        {
-            attackList[realAttackCount] = FightCharTab.BigPunch;
-            realAttackCount++;
-        }else if(Input.GetButtonUp("Fire2"))
-        {
-            attackList[realAttackCount] = FightCharTab.BigPunch;
-            realAttackCount++;
-        }*/
 
         if (realAttackCount == baseAttackCount)
         {
@@ -83,10 +135,15 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    void AttackAuto()
+    {
+        //float actionRandom.Range(0f, 10f);
+    }
+
     void ComboAttack()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
-            player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle")) /*&&
+            player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))*/
         {
             realAttackCount--;
             if (realAttackCount == -1)
@@ -94,33 +151,68 @@ public class PlayerAttack : MonoBehaviour
                 realAttackCount = 0;
                 isSelectingAttack = true;
                 attackList = new char[baseAttackCount];
-                ClearState();
             }
             else
             {
-                FightManager.setAttackPlayer1(attackList[realAttackCount]);
-                ClearState();
+                char zone = ' ';
+                int temp = 0;
+                FightManager.getInfoAttack(ref zone, ref temp, attackList[realAttackCount]);
+                if (playerId == 0)
+                {
+                    if (canDoThatAttack(zone))
+                    {
+                        FightManager.setAttackPlayer1(attackList[realAttackCount]);
+                    }
+                    else
+                    {
+                        attackList[realAttackCount] = 'n';
+                        FightManager.setAttackPlayer1(attackList[realAttackCount]);
+                    }
+                }
+                else
+                {
+                    if (canDoThatAttack(zone))
+                    {
+                        FightManager.setAttackPlayer2(attackList[realAttackCount]);
+                    }
+                    else
+                    {
+                        attackList[realAttackCount] = 'n';
+                        FightManager.setAttackPlayer2(attackList[realAttackCount]);
+                    }
+                }
+
                 switch (attackList[realAttackCount])
                 {
                     case FightCharTab.LittlePunch:
-                        anim.SetBool("Attack", true);
+                        anim.SetTrigger("LittlePunch");
                         break;
                     case FightCharTab.BigPunch:
-                        anim.SetBool("Hit", true);
+                        anim.SetTrigger("BigPunch");
                         break;
                     case FightCharTab.LittleKick:
+                        anim.SetTrigger("LittleKick");
                         break;
                     case FightCharTab.BigKick:
+                        anim.SetTrigger("BigKick");
                         break;
                     case FightCharTab.Head:
+                        anim.SetTrigger("Head");
                         break;
                     case FightCharTab.Laser:
+                        anim.SetTrigger("Laser");
                         break;
                     case FightCharTab.GuardPunch:
+                        anim.SetTrigger("GuardPunch");
                         break;
                     case FightCharTab.GuardKick:
+                        anim.SetTrigger("GuardKick");
                         break;
                     case FightCharTab.GuardHead:
+                        anim.SetTrigger("GuardHead");
+                        break;
+                    case FightCharTab.GuardLaser:
+                        anim.SetTrigger("GuardLaser");
                         break;
                     default:
                         break;
@@ -134,7 +226,14 @@ public class PlayerAttack : MonoBehaviour
     {
         if (isSelectingAttack)
         {
-            AttackSelection();
+            if (playerId < 2)
+            {
+                AttackSelection();
+            }
+            else
+            {
+                AttackAuto();
+            }
         }
         else
         {
@@ -142,3 +241,10 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 }
+
+/*if ((SystemInfo.operatingSystem.contains("Windows") &&
+             (Input.GetAxis(InputManager.Input(InputKey.lt, playerId)) > 0 ||
+              Input.GetAxis(InputManager.Input(InputKey.rt, playerId)) > 0)) ||
+            (SystemInfo.operatingSystem.contains("Linux") && 
+                (Input.GetButton(InputManager.Input(InputKey.lt, playerId)) ||
+                Input.GetButton(InputManager.Input(InputKey.rt, playerId)))))*/
