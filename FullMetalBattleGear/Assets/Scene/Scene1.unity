@@ -112,56 +112,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &1177556438
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4847138044577334, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4847138044577334, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4847138044577334, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4847138044577334, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4847138044577334, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4847138044577334, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4847138044577334, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4847138044577334, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1537460840649670, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_Name
-      value: Player2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1537460840649670, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1001 &1894189868
 Prefab:
   m_ObjectHideFlags: 0
@@ -205,9 +155,10 @@ Prefab:
       propertyPath: m_Name
       value: Player1
       objectReference: {fileID: 0}
-    - target: {fileID: 1537460840649670, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
-      propertyPath: m_TagString
-      value: Player
+    - target: {fileID: 114813900536544106, guid: 638b5e521672e4944a8e24c6540bfab2,
+        type: 2}
+      propertyPath: baseAttackCount
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 638b5e521672e4944a8e24c6540bfab2, type: 2}
@@ -223,6 +174,7 @@ GameObject:
   - component: {fileID: 2045864800}
   - component: {fileID: 2045864799}
   - component: {fileID: 2045864798}
+  - component: {fileID: 2045864802}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -293,3 +245,14 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2045864802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2045864797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e4b235a06cd4dadbe1da7b1efc1b1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -16,15 +16,13 @@ public enum InputKey
     start
 }
 
-public class InputManager : MonoBehaviour {
-
+public class InputManager : MonoBehaviour
+{
     
-
-
     public static string Input(InputKey input, int playerId)
     {
         string output = (playerId == 0) ? "Player1" : "Player2";
-        
+
         switch (input)
         {
             case InputKey.a:
@@ -58,8 +56,7 @@ public class InputManager : MonoBehaviour {
                 output += "Start";
                 break;
         }
-        
+
         return output;
     }
-
 }
