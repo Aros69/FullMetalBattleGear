@@ -5,12 +5,12 @@ using UnityEngine;
 public class Guard : MonoBehaviour {
 
     Animator animator;
-
     int play;
 
     void Start () {
         animator = GetComponent<Animator>();
         play = Animator.StringToHash("Play");
+
     }
 
     public void Play()
@@ -22,6 +22,9 @@ public class Guard : MonoBehaviour {
         animator.SetBool(play, false);
         Invoke("Disapear", 0.5f);
     }
+
+
+
 
     void Disapear()
     {

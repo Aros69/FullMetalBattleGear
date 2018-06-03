@@ -13,7 +13,14 @@ public class GuardManager : MonoBehaviour
     public Guard guardArms2;
     public Guard guardLazer2;
 
+    public GameObject spark1;
+    public GameObject spark2;
+
     public List<Guard> guards = new List<Guard>();
+
+    PlayerHealth player1;
+    PlayerHealth player2;
+
 
     void Start()
     {
@@ -32,6 +39,22 @@ public class GuardManager : MonoBehaviour
         guardLegs2.gameObject.SetActive(false);
         guardArms2.gameObject.SetActive(false);
         guardLazer2.gameObject.SetActive(false);
+
+
+        GameObject[] temp = GameObject.FindGameObjectsWithTag("Player");
+
+        if (temp[0].name == "Player1")
+        {
+            player1 = temp[0].GetComponent<PlayerHealth>();
+            player2 = temp[1].GetComponent<PlayerHealth>();
+        }
+
+        else
+        {
+            player1 = temp[1].GetComponent<PlayerHealth>();
+            player2 = temp[0].GetComponent<PlayerHealth>();
+        }
+
     }
 
     private void Update()
@@ -40,8 +63,23 @@ public class GuardManager : MonoBehaviour
         {
             SpawnGuard(0, FightCharTab.GuardPunch);
         }
-    }
 
+        float a = player1.CurrentGlobalHealth;
+        float b = player1.StartingGlobalHealth;
+
+        if (a / b < 0.5f)
+        {
+            spark1.SetActive(true);
+        }
+
+        a = player2.CurrentGlobalHealth;
+        b = player2.StartingGlobalHealth;
+
+        if (a/ b< 0.5)
+        {
+            spark2.SetActive(true);
+        }
+    }
     public void SpawnGuard(int playerId, char attack)
     {
         int a = (playerId == 0) ? 0 : 3;
