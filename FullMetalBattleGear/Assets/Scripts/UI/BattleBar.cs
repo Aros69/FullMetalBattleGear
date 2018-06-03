@@ -28,19 +28,48 @@ public class BattleBar : MonoBehaviour {
         Tr = GetComponent<RectTransform>();
         MyImage = GetComponent<Image>();
 
-        startPos = Tr.position;
-        endPos = Tr.position;
-        endPos.x = 775f;
-
+        startPos = Tr.anchoredPosition;
+        endPos = Tr.anchoredPosition;
+        endPos.x = Mathf.Abs(endPos.x);
+        
     }
-	
-	void Update () {
+
+
+    void Update()
+    {
+
+        if (Input.GetButtonDown(InputManager.Input(InputKey.select, 0)))
+            StartCoroutine(FightSequence(fightDuration, actions));
 
         if (Input.GetButtonDown(InputManager.Input(InputKey.a, 0)))
-        {
-            StartCoroutine(FightSequence(fightDuration, actions));
-        }
-	}
+            ActionHolder.main.PlayerOneActionAdd(Card.CardType.littlePunch);
+
+        if (Input.GetButtonDown(InputManager.Input(InputKey.b, 0)))
+            ActionHolder.main.PlayerOneActionAdd(Card.CardType.lazer);
+
+        if (Input.GetButtonDown(InputManager.Input(InputKey.x, 0)))
+            ActionHolder.main.PlayerOneActionAdd(Card.CardType.littlePunch);
+
+        if (Input.GetButtonDown(InputManager.Input(InputKey.y, 0)))
+            ActionHolder.main.PlayerOneActionAdd(Card.CardType.head);
+
+        if (Input.GetButtonDown(InputManager.Input(InputKey.a, 1)))
+            ActionHolder.main.PlayerTwoActionAdd(Card.CardType.littlePunch);
+
+        if (Input.GetButtonDown(InputManager.Input(InputKey.b, 1)))
+            ActionHolder.main.PlayerTwoActionAdd(Card.CardType.lazer);
+
+        if (Input.GetButtonDown(InputManager.Input(InputKey.x, 1)))
+            ActionHolder.main.PlayerTwoActionAdd(Card.CardType.littlePunch);
+
+        if (Input.GetButtonDown(InputManager.Input(InputKey.y, 1)))
+            ActionHolder.main.PlayerTwoActionAdd(Card.CardType.head);
+
+
+    }
+
+
+
 
     private void OnValidate()
     {
@@ -75,7 +104,7 @@ public class BattleBar : MonoBehaviour {
     {
         float startTime = Time.time;
         float t = 0;
-        float steps = 1;
+        int steps = 1;
         float timePassed = 0;
 
         while(startTime + duration > Time.time)
@@ -83,13 +112,18 @@ public class BattleBar : MonoBehaviour {
             timePassed += Time.deltaTime;
 
             t = (Time.time - startTime) / duration;
-            Tr.position = Vector2.Lerp(startPos, endPos, t);
+            Tr.anchoredPosition = Vector2.Lerp(startPos, endPos, t);
 
-            if (t >= (1f / actions) * steps) {
+            float sections = (1f / actions);
+
+            if (t >= (sections * steps) - (sections / 2))
+            {
 
                 if (flashCoroutine != null)
                     StopCoroutine(flashCoroutine);
                 flashCoroutine = StartCoroutine(SpriteFlash(flashDuraction));
+
+                ActionHolder.Reveal(steps);
                 steps++;
 
             }

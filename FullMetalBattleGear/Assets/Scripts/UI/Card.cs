@@ -18,11 +18,14 @@ public class Card : MonoBehaviour {
         guardLazer
     }
 
+    public CardType cardType;
+
     public Text MyText { private set; get; }
 
     // Use this for initialization
     void Start () {
         MyText = GetComponentInChildren<Text>();
+        TypeIs(cardType);
 	}
 	
 	// Update is called once per frame
@@ -30,40 +33,48 @@ public class Card : MonoBehaviour {
 		
 	}
 
-    public void TypeIs(CardType cardType)
+    public void Reveal()
     {
+        MyText.text = TypeIs(cardType);
+    }
+
+    string TypeIs(CardType cardType)
+    {
+        string output = "";
+
         switch (cardType)
         {
             case CardType.littlePunch:
-                MyText.text = "LP";
-                return;
+                output = "LP";
+                break;
             case CardType.bigPunch:
-                MyText.text = "BP";
-                return;
+                output = "BP";
+                break;
             case CardType.littleKick:
-                MyText.text = "LK";
-                return;
+                output = "LK";
+                break;
             case CardType.bigKick:
-                MyText.text = "BK";
-                return;
+                output = "BK";
+                break;
             case CardType.head:
-                MyText.text = "H";
-                return;
+                output = "H";
+                break;
             case CardType.lazer:
-                MyText.text = "L";
-                return;
+                output = "L";
+                break;
             case CardType.guardPunch:
-                MyText.text = "GP";
-                return;
+                output = "GP";
+                break;
             case CardType.guardKick:
-                MyText.text = "GK";
-                return;
+                output = "GK";
+                break;
             case CardType.guardHead:
-                MyText.text = "GH";
-                return;
+                output = "GH";
+                break;
             case CardType.guardLazer:
-                MyText.text = "GL";
-                return;
+                output = "GL";
+                break;
         }
+        return output;
     }
 }

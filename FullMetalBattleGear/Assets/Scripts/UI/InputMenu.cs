@@ -11,15 +11,15 @@ public class InputMenu : MonoBehaviour {
     public float fadeDuration = 0.5f;
 
     public RectTransform Tr { private set; get; }
-    public Image MyImage { private set; get; }
+    public List<Image> MyImages { private set; get; }
 
     void Start()
     {
 
         Tr = GetComponent<RectTransform>();
-        MyImage = GetComponent<Image>();
-
-        MyImage.color = new Color(1, 1, 1, 0);
+        MyImages = new List<Image>(GetComponentsInChildren<Image>());
+        
+        MyImages.ForEach(n => n.color = new Color(1, 1, 1, 0));
     }
 
     // Update is called once per frame
@@ -31,6 +31,7 @@ public class InputMenu : MonoBehaviour {
 
             fadeCoroutine = StartCoroutine(FadeIn(fadeDuration));
         }	
+
         else if (Input.GetKeyUp(KeyCode.F11))
         {
             if (fadeCoroutine != null)
@@ -42,7 +43,7 @@ public class InputMenu : MonoBehaviour {
 
     IEnumerator FadeIn(float duration)
     {
-        float t = MyImage.color.a;
+        float t = MyImages[0].color.a;
         float startOffset = duration * t;
         float startTime = Time.time;
         float timePassed = 0;
@@ -52,16 +53,16 @@ public class InputMenu : MonoBehaviour {
             timePassed += Time.deltaTime;
             t = ((Time.time + startOffset) - startTime) / duration;
 
-            MyImage.color = new Color(1, 1, 1, t);
+            MyImages.ForEach(n => n.color = new Color(1, 1, 1, t));
             yield return null;
         }
-        MyImage.color = new Color(1, 1, 1, 1);
+        MyImages.ForEach(n => n.color = new Color(1, 1, 1, 1));
 
     }
 
     IEnumerator FadeOut(float duration)
     {
-        float t = 1 - MyImage.color.a;
+        float t = 1 - MyImages[0].color.a;
         float startTime = Time.time;
         float startOffset = duration * t;
         float timePassed = 0;
@@ -71,10 +72,10 @@ public class InputMenu : MonoBehaviour {
             timePassed += Time.deltaTime;
             t = 1 - ((Time.time + startOffset) - startTime) / duration;
 
-            MyImage.color = new Color(1, 1, 1, t);
+            MyImages.ForEach(n => n.color = new Color(1, 1, 1, t));
             yield return null;
         }
-        MyImage.color = new Color(1, 1, 1, 0);
+        MyImages.ForEach(n => n.color = new Color(1, 1, 1, 0));
 
     }
 }
