@@ -16,6 +16,8 @@ public class PlayerAttack : MonoBehaviour
     private Animator anim;
     private PlayerHealth playerHealth;
 
+    private bool isCoroutineAlreadyRunning = false;
+
     // Use this for initialization
     void Start()
     {
@@ -97,7 +99,7 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetAxis(InputManager.Input(InputKey.lt, playerId)) > 0 ||
             Input.GetAxis(InputManager.Input(InputKey.rt, playerId)) > 0)
         {
-             if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
+            if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.GuardPunch;
                 ActionHolder.main.PlayerActionAdd(Card.CardType.guardPunch, playerId);
@@ -159,25 +161,89 @@ public class PlayerAttack : MonoBehaviour
 
     void AttackAuto()
     {
-        //float actionRandom.Range(0f, 10f);
+        int numAction = 0;
+        char action = FightCharTab.Nothing;
+        do
+        {
+            numAction = (int) Mathf.Floor(Random.Range(0f, 8f));
+            switch (numAction)
+            {
+                case 0:
+                    if (playerHealth.CurrentArmsHealth > 0)
+                    {
+                        action = FightCharTab.LittlePunch;
+                    }
+
+                    break;
+                case 1:
+                    action = FightCharTab.GuardLaser;
+                    break;
+                case 2:
+                    if (playerHealth.CurrentLegsHealth > 0)
+                    {
+                        action = FightCharTab.BigKick;
+                    }
+
+                    break;
+                case 3:
+                    if (playerHealth.CurrentArmsHealth > 0)
+                    {
+                        action = FightCharTab.GuardPunch;
+                    }
+
+                    break;
+                case 4:
+                    action = FightCharTab.Laser;
+                    break;
+                case 5:
+                    if (playerHealth.CurrentLegsHealth > 0)
+                    {
+                        action = FightCharTab.LittleKick;
+                    }
+
+                    break;
+                case 6:
+                    if (playerHealth.CurrentArmsHealth > 0)
+                    {
+                        action = FightCharTab.BigPunch;
+                    }
+
+                    break;
+                case 7:
+                    if (playerHealth.CurrentLegsHealth > 0)
+                    {
+                        action = FightCharTab.GuardKick;
+                    }
+
+                    break;
+            }
+        } while (action == 'n');
+
+        attackList[realAttackCount] = action;
+        realAttackCount++;
+        if (realAttackCount == baseAttackCount)
+        {
+            isSelectingAttack = false;
+        }
     }
 
     IEnumerator ComboAttack()
     {
+        isCoroutineAlreadyRunning = true;
         if (!player2Attack.isSelectingAttack &&
             anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
             realAttackCount >= player2Attack.realAttackCount &&
             player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
-        {
+        {           
             if (realAttackCount == baseAttackCount)
             {
                 StartCoroutine(BattleBar.main.FightSequence(BattleBar.main.FightDuration, BattleBar.main.actions));
                 yield return new WaitForSeconds(1f);
             }
+
             realAttackCount--;
             if (realAttackCount == -1)
             {
-                
                 realAttackCount = 0;
                 isSelectingAttack = true;
                 player2Attack.isSelectingAttack = true;
@@ -197,8 +263,6 @@ public class PlayerAttack : MonoBehaviour
                     }
                     else
                     {
-                        //attackList[realAttackCount] = 'n';
-                        //FightManager.setAttackPlayer1(attackList[realAttackCount]);
                         FightManager.setAttackPlayer1('n');
                     }
                 }
@@ -210,13 +274,12 @@ public class PlayerAttack : MonoBehaviour
                     }
                     else
                     {
-                        //attackList[realAttackCount] = 'n';
-                        //FightManager.setAttackPlayer2(attackList[realAttackCount]);
                         FightManager.setAttackPlayer2('n');
                     }
                 }
             }
         }
+        isCoroutineAlreadyRunning = false;
     }
 
     // Update is called once per frame
@@ -235,8 +298,10 @@ public class PlayerAttack : MonoBehaviour
         }
         else
         {
-
-            StartCoroutine(ComboAttack());
+            if (!isCoroutineAlreadyRunning)
+            {
+                StartCoroutine(ComboAttack());
+            }
         }
     }
 }

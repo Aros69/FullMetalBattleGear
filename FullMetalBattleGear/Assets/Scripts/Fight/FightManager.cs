@@ -45,7 +45,6 @@ public class FightManager : MonoBehaviour
         }
 
         main = this;
-        // Get the two player health info
     }
 
     public float DureeAnimation()
