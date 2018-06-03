@@ -10,6 +10,8 @@ public class FightManager : MonoBehaviour
     private GameObject[] players;
     private PlayerHealth Player1Health;
     private PlayerHealth Player2Health;
+    private Animator player1Animator;
+    private Animator player2Animator;
 
     static public void setAttackPlayer1(char newAttack)
     {
@@ -25,8 +27,21 @@ public class FightManager : MonoBehaviour
     void Start()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
-        Player1Health = players[0].GetComponent<PlayerHealth>();
-        Player2Health = players[1].GetComponent<PlayerHealth>();
+        if (players[0].name == "Player1")
+        {
+            Player1Health = players[0].GetComponent<PlayerHealth>();
+            Player2Health = players[1].GetComponent<PlayerHealth>();
+            player1Animator = players[0].GetComponent<Animator>();
+            player2Animator = players[1].GetComponent<Animator>();
+        }
+        else
+        {
+            Player1Health = players[1].GetComponent<PlayerHealth>();
+            Player2Health = players[0].GetComponent<PlayerHealth>();
+            player1Animator = players[1].GetComponent<Animator>();
+            player2Animator = players[0].GetComponent<Animator>();
+        }
+        
 
         // Get the two player health info
     }
@@ -94,13 +109,60 @@ public class FightManager : MonoBehaviour
         }
     }
 
+    void setAnimTrigger(Animator playerAnimator, char attackPlayer, char attackEnnemy)
+    {
+        switch (attackPlayer)
+        {
+            case FightCharTab.LittlePunch:
+                playerAnimator.SetTrigger("LittlePunch");
+                break;
+            case FightCharTab.BigPunch:
+                playerAnimator.SetTrigger("BigPunch");
+                break;
+            case FightCharTab.LittleKick:
+                playerAnimator.SetTrigger("LittleKick");
+                break;
+            case FightCharTab.BigKick:
+                playerAnimator.SetTrigger("BigKick");
+                break;
+            case FightCharTab.Head:
+                playerAnimator.SetTrigger("Head");
+                break;
+            case FightCharTab.Laser:
+                if (attackEnnemy != FightCharTab.GuardLaser)
+                {
+                    playerAnimator.SetTrigger("Laser");
+                }
+                else
+                {
+                    playerAnimator.SetTrigger("FailLaser");
+                }
+
+                break;
+            case FightCharTab.GuardPunch:
+                playerAnimator.SetTrigger("GuardPunch");
+                break;
+            case FightCharTab.GuardKick:
+                playerAnimator.SetTrigger("GuardKick");
+                break;
+            case FightCharTab.GuardHead:
+                playerAnimator.SetTrigger("GuardHead");
+                break;
+            case FightCharTab.GuardLaser:
+                playerAnimator.SetTrigger("GuardLaser");
+                break;
+            default:
+                playerAnimator.SetTrigger("Fail");
+                break;
+        }
+    }
+
     void Update()
     {
         if (attackPlayer1 != ' ' && attackPlayer2 != ' ')
         {
-            /* string combat = "On lance le combat : p1 joue " + attackPlayer1;
-            combat += " p2 joue " + attackPlayer2;
-            Debug.Log(combat); */
+            setAnimTrigger(player1Animator, attackPlayer1, attackPlayer2);
+            setAnimTrigger(player2Animator, attackPlayer2, attackPlayer1);
             char attackZoneP1 = ' ';
             char attackZoneP2 = ' ';
             int damageP1 = 0;

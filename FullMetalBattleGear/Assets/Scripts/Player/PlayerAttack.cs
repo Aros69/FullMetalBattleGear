@@ -8,30 +8,53 @@ public class PlayerAttack : MonoBehaviour
     public int realAttackCount = 0;
     public bool isSelectingAttack = true;
     public char[] attackList;
+    public int playerId;
 
-    private GameObject[] secondPlayer;
+    private GameObject secondPlayer;
     private Animator player2Animator;
+    private PlayerAttack player2Attack;
     private Animator anim;
     private PlayerHealth playerHealth;
-
-    private int playerId;
 
     // Use this for initialization
     void Start()
     {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if (name == "Player1")
         {
             playerId = 0;
-        }
-        else if (name == "Player2")
-        {
-            playerId = 1;
+            if (players[0].name == "Player1")
+            {
+                secondPlayer = players[1];
+            }
+            else
+            {
+                secondPlayer = players[0];
+            }
         }
         else
         {
-            playerId = 2;
+            if (name == "Player2")
+            {
+                playerId = 1;
+            }
+            else
+            {
+                playerId = 2;
+            }
+
+            if (players[0].name == "Player1")
+            {
+                secondPlayer = players[0];
+            }
+            else
+            {
+                secondPlayer = players[1];
+            }
         }
 
+        player2Attack = secondPlayer.GetComponent<PlayerAttack>();
+        player2Animator = secondPlayer.GetComponent<Animator>();
         playerHealth = GetComponent<PlayerHealth>();
         attackList = new char[baseAttackCount];
         anim = GetComponent<Animator>();
@@ -142,14 +165,18 @@ public class PlayerAttack : MonoBehaviour
 
     void ComboAttack()
     {
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle")) /*&&
-            player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))*/
+        if (!player2Attack.isSelectingAttack &&
+            anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
+            realAttackCount >= player2Attack.realAttackCount &&
+            player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
         {
             realAttackCount--;
             if (realAttackCount == -1)
             {
                 realAttackCount = 0;
                 isSelectingAttack = true;
+                player2Attack.isSelectingAttack = true;
+                player2Attack.attackList = new char[baseAttackCount];
                 attackList = new char[baseAttackCount];
             }
             else
@@ -165,8 +192,9 @@ public class PlayerAttack : MonoBehaviour
                     }
                     else
                     {
-                        attackList[realAttackCount] = 'n';
-                        FightManager.setAttackPlayer1(attackList[realAttackCount]);
+                        //attackList[realAttackCount] = 'n';
+                        //FightManager.setAttackPlayer1(attackList[realAttackCount]);
+                        FightManager.setAttackPlayer1('n');
                     }
                 }
                 else
@@ -177,45 +205,10 @@ public class PlayerAttack : MonoBehaviour
                     }
                     else
                     {
-                        attackList[realAttackCount] = 'n';
-                        FightManager.setAttackPlayer2(attackList[realAttackCount]);
+                        //attackList[realAttackCount] = 'n';
+                        //FightManager.setAttackPlayer2(attackList[realAttackCount]);
+                        FightManager.setAttackPlayer2('n');
                     }
-                }
-
-                switch (attackList[realAttackCount])
-                {
-                    case FightCharTab.LittlePunch:
-                        anim.SetTrigger("LittlePunch");
-                        break;
-                    case FightCharTab.BigPunch:
-                        anim.SetTrigger("BigPunch");
-                        break;
-                    case FightCharTab.LittleKick:
-                        anim.SetTrigger("LittleKick");
-                        break;
-                    case FightCharTab.BigKick:
-                        anim.SetTrigger("BigKick");
-                        break;
-                    case FightCharTab.Head:
-                        anim.SetTrigger("Head");
-                        break;
-                    case FightCharTab.Laser:
-                        anim.SetTrigger("Laser");
-                        break;
-                    case FightCharTab.GuardPunch:
-                        anim.SetTrigger("GuardPunch");
-                        break;
-                    case FightCharTab.GuardKick:
-                        anim.SetTrigger("GuardKick");
-                        break;
-                    case FightCharTab.GuardHead:
-                        anim.SetTrigger("GuardHead");
-                        break;
-                    case FightCharTab.GuardLaser:
-                        anim.SetTrigger("GuardLaser");
-                        break;
-                    default:
-                        break;
                 }
             }
         }
