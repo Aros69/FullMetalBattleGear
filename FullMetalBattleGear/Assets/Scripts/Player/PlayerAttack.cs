@@ -97,24 +97,23 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetAxis(InputManager.Input(InputKey.lt, playerId)) > 0 ||
             Input.GetAxis(InputManager.Input(InputKey.rt, playerId)) > 0)
         {
-            if (Input.GetButtonUp(InputManager.Input(InputKey.y, playerId)) && playerHealth.CurrentHeadHealth > 0)
-            {
-                attackList[realAttackCount] = FightCharTab.GuardHead;
-                realAttackCount++;
-            }
-            else if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
+             if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.GuardPunch;
+                ActionHolder.main.PlayerActionAdd(Card.CardType.guardPunch, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.a, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.GuardKick;
+
+                ActionHolder.main.PlayerActionAdd(Card.CardType.guardKick, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.b, playerId)))
             {
                 attackList[realAttackCount] = FightCharTab.GuardLaser;
+                ActionHolder.main.PlayerActionAdd(Card.CardType.guardLazer, playerId);
                 realAttackCount++;
             }
         }
@@ -123,31 +122,31 @@ public class PlayerAttack : MonoBehaviour
             if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.LittlePunch;
+                ActionHolder.main.PlayerActionAdd(Card.CardType.littlePunch, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.rb, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.BigPunch;
+                ActionHolder.main.PlayerActionAdd(Card.CardType.bigPunch, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.a, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.LittleKick;
+                ActionHolder.main.PlayerActionAdd(Card.CardType.littleKick, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.lb, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.BigKick;
-                realAttackCount++;
-            }
-            else if (Input.GetButtonUp(InputManager.Input(InputKey.y, playerId)) && playerHealth.CurrentHeadHealth > 0)
-            {
-                attackList[realAttackCount] = FightCharTab.Head;
+                ActionHolder.main.PlayerActionAdd(Card.CardType.bigKick, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.b, playerId)))
             {
                 attackList[realAttackCount] = FightCharTab.Laser;
+                ActionHolder.main.PlayerActionAdd(Card.CardType.lazer, playerId);
                 realAttackCount++;
             }
         }
@@ -163,16 +162,22 @@ public class PlayerAttack : MonoBehaviour
         //float actionRandom.Range(0f, 10f);
     }
 
-    void ComboAttack()
+    IEnumerator ComboAttack()
     {
         if (!player2Attack.isSelectingAttack &&
             anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
             realAttackCount >= player2Attack.realAttackCount &&
             player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
         {
+            if (realAttackCount == baseAttackCount)
+            {
+                StartCoroutine(BattleBar.main.FightSequence(BattleBar.main.FightDuration, BattleBar.main.actions));
+                yield return new WaitForSeconds(1f);
+            }
             realAttackCount--;
             if (realAttackCount == -1)
             {
+                
                 realAttackCount = 0;
                 isSelectingAttack = true;
                 player2Attack.isSelectingAttack = true;
@@ -230,7 +235,8 @@ public class PlayerAttack : MonoBehaviour
         }
         else
         {
-            ComboAttack();
+
+            StartCoroutine(ComboAttack());
         }
     }
 }

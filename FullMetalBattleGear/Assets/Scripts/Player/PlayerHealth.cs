@@ -51,6 +51,9 @@ public class PlayerHealth : MonoBehaviour
                 break;
         }
 
-        healthBar.UpdateHealth(CurrentGlobalHealth / StartingGlobalHealth);
+        float a = CurrentGlobalHealth;
+        float b = StartingGlobalHealth;
+
+        healthBar.UpdateHealth(a / b);
     }
 }

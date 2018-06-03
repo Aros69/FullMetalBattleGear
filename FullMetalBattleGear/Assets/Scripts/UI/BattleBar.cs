@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class BattleBar : MonoBehaviour {
 
+    public static BattleBar main;
+
     Vector2 startPos;
     Vector2 endPos;
 
@@ -14,7 +16,8 @@ public class BattleBar : MonoBehaviour {
     public Color flashColor = Color.white;
     public Color barColor = Color.black;
 
-    public float fightDuration = 10f;
+    public float FightDuration { private set; get; }
+
     public int actions = 5;
     public float flashDuraction = 0.5f;
 
@@ -25,6 +28,10 @@ public class BattleBar : MonoBehaviour {
     
     void Start () {
 
+        main = this;
+
+        FightDuration = FightManager.main.DureeAnimation() * 5f;
+
         Tr = GetComponent<RectTransform>();
         MyImage = GetComponent<Image>();
 
@@ -34,46 +41,12 @@ public class BattleBar : MonoBehaviour {
         
     }
 
-
-    void Update()
-    {
-
-        if (Input.GetButtonDown(InputManager.Input(InputKey.select, 0)))
-            StartCoroutine(FightSequence(fightDuration, actions));
-
-        if (Input.GetButtonDown(InputManager.Input(InputKey.a, 0)))
-            ActionHolder.main.PlayerOneActionAdd(Card.CardType.littlePunch);
-
-        if (Input.GetButtonDown(InputManager.Input(InputKey.b, 0)))
-            ActionHolder.main.PlayerOneActionAdd(Card.CardType.lazer);
-
-        if (Input.GetButtonDown(InputManager.Input(InputKey.x, 0)))
-            ActionHolder.main.PlayerOneActionAdd(Card.CardType.littlePunch);
-
-        if (Input.GetButtonDown(InputManager.Input(InputKey.y, 0)))
-            ActionHolder.main.PlayerOneActionAdd(Card.CardType.head);
-
-        if (Input.GetButtonDown(InputManager.Input(InputKey.a, 1)))
-            ActionHolder.main.PlayerTwoActionAdd(Card.CardType.littlePunch);
-
-        if (Input.GetButtonDown(InputManager.Input(InputKey.b, 1)))
-            ActionHolder.main.PlayerTwoActionAdd(Card.CardType.lazer);
-
-        if (Input.GetButtonDown(InputManager.Input(InputKey.x, 1)))
-            ActionHolder.main.PlayerTwoActionAdd(Card.CardType.littlePunch);
-
-        if (Input.GetButtonDown(InputManager.Input(InputKey.y, 1)))
-            ActionHolder.main.PlayerTwoActionAdd(Card.CardType.head);
-
-
-    }
-
     private void OnValidate()
     {
         GetComponent<Image>().color = barColor;
     }
 
-    IEnumerator FightSequence(float duration, int actions)
+    public IEnumerator FightSequence(float duration, int actions)
     {
         float startTime = Time.time;
         float t = 0;
@@ -91,7 +64,6 @@ public class BattleBar : MonoBehaviour {
 
             if (t >= (sections * steps) - (sections / 2))
             {
-
                 if (flashCoroutine != null)
                     StopCoroutine(flashCoroutine);
                 flashCoroutine = StartCoroutine(SpriteFlash(flashDuraction));

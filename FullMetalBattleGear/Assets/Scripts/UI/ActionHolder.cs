@@ -35,23 +35,24 @@ public class ActionHolder : MonoBehaviour {
         main.player2Tiles[steps - 1].CurrentCard.Reveal();
     }
 
-    public void PlayerOneActionAdd(Card.CardType cardType)
+    public void PlayerActionAdd(Card.CardType cardType, int playerId)
     {
-        if (player1ActionCount < playerActions)
-        {
-            player1Tiles[player1ActionCount].AddCard(cardType);
-            player1ActionCount++;
-        }
+        Debug.Log(playerId);
+        if(playerId == 0)
+            if (player1ActionCount < playerActions)
+            {
+                player1Tiles[player1ActionCount].AddCard(cardType);
+                player1ActionCount++;
+            }
+
+        else
+            if (player2ActionCount < playerActions)
+            {
+                player2Tiles[player2ActionCount].AddCard(cardType);
+                player2ActionCount++;
+            }
     }
 
-    public void PlayerTwoActionAdd(Card.CardType cardType)
-    {
-        if (player2ActionCount < playerActions)
-        {
-            player2Tiles[player2ActionCount].AddCard(cardType);
-            player2ActionCount++;
-        }
-    }
 
 
     //private void OnDrawGizmos()

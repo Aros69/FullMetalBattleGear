@@ -7,6 +7,8 @@ public class FightManager : MonoBehaviour
     static public char attackPlayer1 = ' ';
     static public char attackPlayer2 = ' ';
 
+    public static FightManager main;
+
     private GameObject[] players;
     private PlayerHealth Player1Health;
     private PlayerHealth Player2Health;
@@ -24,7 +26,7 @@ public class FightManager : MonoBehaviour
     }
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
         if (players[0].name == "Player1")
@@ -41,9 +43,29 @@ public class FightManager : MonoBehaviour
             player1Animator = players[1].GetComponent<Animator>();
             player2Animator = players[0].GetComponent<Animator>();
         }
-        
 
+        main = this;
         // Get the two player health info
+    }
+
+    public float DureeAnimation()
+    {
+        float a = 0;
+        RuntimeAnimatorController rac = player1Animator.runtimeAnimatorController;
+        foreach (AnimationClip ac in rac.animationClips)
+        {
+            if (ac.length > a)
+                    a = ac.length;
+        }
+
+        rac = player2Animator.runtimeAnimatorController;
+        foreach (AnimationClip ac in rac.animationClips)
+        {
+            if (ac.length > a)
+                a = ac.length;
+        }
+
+        return a;
     }
 
     static bool isAttacking(char attack)
