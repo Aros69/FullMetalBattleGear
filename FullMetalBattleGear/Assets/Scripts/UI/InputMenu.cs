@@ -24,7 +24,7 @@ public class InputMenu : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (Input.GetKeyDown(KeyCode.F11))
+        if (Input.GetKeyDown(KeyCode.JoystickButton3))
         {
             if (fadeCoroutine != null)
                 StopCoroutine(fadeCoroutine);
@@ -32,7 +32,7 @@ public class InputMenu : MonoBehaviour {
             fadeCoroutine = StartCoroutine(FadeIn(fadeDuration));
         }	
 
-        else if (Input.GetKeyUp(KeyCode.F11))
+        else if (Input.GetKeyUp(KeyCode.JoystickButton3))
         {
             if (fadeCoroutine != null)
                 StopCoroutine(fadeCoroutine);

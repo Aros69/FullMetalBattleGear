@@ -27,6 +27,9 @@ public class ActionHolder : MonoBehaviour {
     {
         main.player1Tiles.ForEach(n => n.FadeOut());
         main.player2Tiles.ForEach(n => n.FadeOut());
+
+        main.player1ActionCount = 0;
+        main.player2ActionCount = 0;
     }
 
     public static void Reveal(int steps)
@@ -38,54 +41,20 @@ public class ActionHolder : MonoBehaviour {
     public void PlayerActionAdd(Card.CardType cardType, int playerId)
     {
         Debug.Log(playerId);
-        if(playerId == 0)
+        if (playerId == 0) { 
             if (player1ActionCount < playerActions)
             {
                 player1Tiles[player1ActionCount].AddCard(cardType);
                 player1ActionCount++;
             }
-
+        }
         else
-            if (player2ActionCount < playerActions)
             {
-                player2Tiles[player2ActionCount].AddCard(cardType);
-                player2ActionCount++;
+                if (player2ActionCount < playerActions)
+                {
+                    player2Tiles[player2ActionCount].AddCard(cardType);
+                    player2ActionCount++;
+                }
             }
     }
-
-
-
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.magenta;
-
-    //    Vector2 startPos = left;
-    //    startPos.y += 1f;
-    //    Vector2 endPos = left;
-    //    endPos.y += 1f;
-
-    //    Gizmos.DrawLine(startPos, endPos);
-
-    //    startPos = left;
-    //    startPos.x += 1f;
-    //    endPos = left;
-    //    endPos.x += 1f;
-
-    //    Gizmos.DrawLine(startPos, endPos);
-
-
-    //    startPos = right;
-    //    startPos.y += 1f;
-    //    endPos = right;
-    //    endPos.y += 1f;
-
-    //    Gizmos.DrawLine(startPos, endPos);
-
-    //    startPos = left;
-    //    startPos.x += 1f;
-    //    endPos = left;
-    //    endPos.x += 1f;
-
-    //    Gizmos.DrawLine(startPos, endPos);
-    //}
 }

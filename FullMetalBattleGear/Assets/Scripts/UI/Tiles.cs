@@ -41,7 +41,10 @@ public class Tiles : MonoBehaviour {
 
     public void FadeOut()
     {
+
+        CurrentCard.MyText.text = "";
         StartCoroutine(FadeOut(cardDisapeareanceDuration));
+
     }
 
     IEnumerator FadeOut(float duration)

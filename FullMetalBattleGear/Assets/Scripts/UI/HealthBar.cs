@@ -6,18 +6,22 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour {
 
     public Image MyImage { private get; set; }
-
     public float duration = 0.5f;
-
     public AnimationCurve lifeLossCurve;
 
-	void Start () {
+    Coroutine healthUpdateCoroutine;
+
+
+    void Start () {
         MyImage = GetComponent<Image>();
 	}
 
     public void UpdateHealth(float percent)
     {
-        StartCoroutine(UpdateImage(percent, duration));
+        if (healthUpdateCoroutine != null)
+            StopCoroutine(healthUpdateCoroutine);
+
+        healthUpdateCoroutine = StartCoroutine(UpdateImage(percent, duration));
     }
 
     IEnumerator UpdateImage(float percent, float duration)
