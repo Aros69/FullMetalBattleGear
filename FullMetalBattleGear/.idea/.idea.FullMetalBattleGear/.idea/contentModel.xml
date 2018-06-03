@@ -29,6 +29,7 @@
             <e p="BattleBar.cs" t="Include" />
             <e p="Card.cs" t="Include" />
             <e p="ChangeScene.cs" t="Include" />
+            <e p="DontDestroyOnLoad.cs" t="Include" />
             <e p="HealthBar.cs" t="Include" />
             <e p="InputMenu.cs" t="Include" />
             <e p="Tiles.cs" t="Include" />

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FightManager : MonoBehaviour
 {
@@ -54,7 +55,7 @@ public class FightManager : MonoBehaviour
         foreach (AnimationClip ac in rac.animationClips)
         {
             if (ac.length > a)
-                    a = ac.length;
+                a = ac.length;
         }
 
         rac = player2Animator.runtimeAnimatorController;
@@ -223,5 +224,10 @@ public class FightManager : MonoBehaviour
             attackPlayer1 = ' ';
             attackPlayer2 = ' ';
         }
+
+        /*if (Player1Health.CurrentGlobalHealth <= 0 == Player2Health.CurrentGlobalHealth <= 0)
+        {
+            SceneManager.LoadScene("StartScreen");
+        }*/
     }
 }

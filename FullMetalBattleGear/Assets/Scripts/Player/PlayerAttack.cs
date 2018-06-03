@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public int baseAttackCount = 5;
+    public int baseAttackCount = 6;
     public int realAttackCount = 0;
     public bool isSelectingAttack = true;
     public char[] attackList;
@@ -59,6 +60,8 @@ public class PlayerAttack : MonoBehaviour
         player2Animator = secondPlayer.GetComponent<Animator>();
         playerHealth = GetComponent<PlayerHealth>();
         attackList = new char[baseAttackCount];
+        attackList[0] = FightCharTab.Nothing;
+        realAttackCount++;
         anim = GetComponent<Animator>();
     }
 
@@ -108,7 +111,6 @@ public class PlayerAttack : MonoBehaviour
             else if (Input.GetButtonUp(InputManager.Input(InputKey.a, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.GuardKick;
-
                 ActionHolder.main.PlayerActionAdd(Card.CardType.guardKick, playerId);
                 realAttackCount++;
             }
@@ -155,6 +157,7 @@ public class PlayerAttack : MonoBehaviour
 
         if (realAttackCount == baseAttackCount)
         {
+            realAttackCount = 0;
             isSelectingAttack = false;
         }
     }
@@ -165,23 +168,26 @@ public class PlayerAttack : MonoBehaviour
         char action = FightCharTab.Nothing;
         do
         {
-            numAction = (int) Mathf.Floor(Random.Range(0f, 8f));
+            numAction = (int) Mathf.Floor(UnityEngine.Random.Range(0f, 8f));
             switch (numAction)
             {
                 case 0:
                     if (playerHealth.CurrentArmsHealth > 0)
                     {
                         action = FightCharTab.LittlePunch;
+                        ActionHolder.main.PlayerActionAdd(Card.CardType.littlePunch, playerId);
                     }
 
                     break;
                 case 1:
                     action = FightCharTab.GuardLaser;
+                    ActionHolder.main.PlayerActionAdd(Card.CardType.guardLazer, playerId);
                     break;
                 case 2:
                     if (playerHealth.CurrentLegsHealth > 0)
                     {
                         action = FightCharTab.BigKick;
+                        ActionHolder.main.PlayerActionAdd(Card.CardType.bigKick, playerId);
                     }
 
                     break;
@@ -189,16 +195,19 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentArmsHealth > 0)
                     {
                         action = FightCharTab.GuardPunch;
+                        ActionHolder.main.PlayerActionAdd(Card.CardType.guardPunch, playerId);
                     }
 
                     break;
                 case 4:
                     action = FightCharTab.Laser;
+                    ActionHolder.main.PlayerActionAdd(Card.CardType.lazer, playerId);
                     break;
                 case 5:
                     if (playerHealth.CurrentLegsHealth > 0)
                     {
                         action = FightCharTab.LittleKick;
+                        ActionHolder.main.PlayerActionAdd(Card.CardType.littleKick, playerId);
                     }
 
                     break;
@@ -206,6 +215,7 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentArmsHealth > 0)
                     {
                         action = FightCharTab.BigPunch;
+                        ActionHolder.main.PlayerActionAdd(Card.CardType.bigPunch, playerId);
                     }
 
                     break;
@@ -213,16 +223,18 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentLegsHealth > 0)
                     {
                         action = FightCharTab.GuardKick;
+                        ActionHolder.main.PlayerActionAdd(Card.CardType.guardKick, playerId);
                     }
 
                     break;
             }
-        } while (action == 'n');
+        } while (action == FightCharTab.Nothing);
 
         attackList[realAttackCount] = action;
         realAttackCount++;
         if (realAttackCount == baseAttackCount)
         {
+            realAttackCount = 0;
             isSelectingAttack = false;
         }
     }
@@ -232,24 +244,22 @@ public class PlayerAttack : MonoBehaviour
         isCoroutineAlreadyRunning = true;
         if (!player2Attack.isSelectingAttack &&
             anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
-            realAttackCount >= player2Attack.realAttackCount &&
             player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
-        {           
-            if (realAttackCount == baseAttackCount)
+        {
+            if (realAttackCount == 0)
             {
                 StartCoroutine(BattleBar.main.FightSequence(BattleBar.main.FightDuration, BattleBar.main.actions));
                 yield return new WaitForSeconds(1f);
             }
 
-            realAttackCount--;
-            if (realAttackCount == -1)
+            if (realAttackCount == baseAttackCount)
             {
                 realAttackCount = 0;
                 isSelectingAttack = true;
-                player2Attack.isSelectingAttack = true;
-                player2Attack.attackList = new char[baseAttackCount];
                 attackList = new char[baseAttackCount];
+                attackList[0] = FightCharTab.Nothing;
             }
+
             else
             {
                 char zone = ' ';
@@ -278,7 +288,20 @@ public class PlayerAttack : MonoBehaviour
                     }
                 }
             }
+
+            realAttackCount++;
         }
+        /*else if (player2Attack.isSelectingAttack &&
+                 anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
+                 player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
+                 realAttackCount == baseAttackCount)
+        {
+            realAttackCount = 0;
+            isSelectingAttack = true;
+            attackList = new char[baseAttackCount];
+            attackList[0] = FightCharTab.Nothing;
+        }*/
+
         isCoroutineAlreadyRunning = false;
     }
 
