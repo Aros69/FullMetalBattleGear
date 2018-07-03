@@ -40,7 +40,7 @@ public class ActionHolder : MonoBehaviour {
 
     public void PlayerActionAdd(Card.CardType cardType, int playerId)
     {
-        Debug.Log(playerId);
+        //Debug.Log(playerId);
         if (playerId == 0) { 
             if (player1ActionCount < playerActions)
             {

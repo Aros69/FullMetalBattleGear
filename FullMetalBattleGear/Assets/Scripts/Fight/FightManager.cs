@@ -1,36 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FightManager : MonoBehaviour
 {
-    static public char attackPlayer1 = ' ';
-    static public char attackPlayer2 = ' ';
+    // The current attack of player 1 done (space if none)
+    private char attackPlayer1 = ' ';
 
+    // The current attack of player 2 done (space if none)
+    private char attackPlayer2 = ' ';
+
+    // Reference to it self ?!
     public static FightManager main;
-    private Color GG;
+
+    // Reference to the two palyerq
     private GameObject[] players;
+
+    // Reference to player 1 health
     private PlayerHealth Player1Health;
+
+    // Reference to player 2 health
     private PlayerHealth Player2Health;
+
+    // Reference to player 1 animator
     private Animator player1Animator;
+
+    // Reference to player 2 animator
     private Animator player2Animator;
 
-    static public void setAttackPlayer1(char newAttack)
-    {
-        attackPlayer1 = newAttack;
-    }
+    // Reference to player 1 attack script
+    private PlayerAttack player1Attack;
 
-    static public void setAttackPlayer2(char newAttack)
-    {
-        attackPlayer2 = newAttack;
-    }
+    // Reference to player 2 attack script
+    private PlayerAttack player2Attack;
 
     // Use this for initialization
     void Awake()
     {
-        GG = GameObject.FindGameObjectWithTag("Finish").GetComponent<Text>().material.color;
         players = GameObject.FindGameObjectsWithTag("Player");
         if (players[0].name == "Player1")
         {
@@ -38,6 +47,8 @@ public class FightManager : MonoBehaviour
             Player2Health = players[1].GetComponent<PlayerHealth>();
             player1Animator = players[0].GetComponent<Animator>();
             player2Animator = players[1].GetComponent<Animator>();
+            player1Attack = players[0].GetComponent<PlayerAttack>();
+            player2Attack = players[1].GetComponent<PlayerAttack>();
         }
         else
         {
@@ -45,11 +56,14 @@ public class FightManager : MonoBehaviour
             Player2Health = players[0].GetComponent<PlayerHealth>();
             player1Animator = players[1].GetComponent<Animator>();
             player2Animator = players[0].GetComponent<Animator>();
+            player1Attack = players[1].GetComponent<PlayerAttack>();
+            player2Attack = players[0].GetComponent<PlayerAttack>();
         }
 
         main = this;
     }
 
+    // Return the longest animation of the two player
     public float DureeAnimation()
     {
         float a = 0;
@@ -82,6 +96,7 @@ public class FightManager : MonoBehaviour
         return false;
     }
 
+    // Function that manage each damage of each attack and zone
     static public void getInfoAttack(ref char attackZone, ref int damageDealed, char attack)
     {
         switch (attack)
@@ -133,6 +148,7 @@ public class FightManager : MonoBehaviour
         }
     }
 
+    // Manager of anim trigger
     void setAnimTrigger(Animator playerAnimator, char attackPlayer, char attackEnnemy)
     {
         switch (attackPlayer)
@@ -183,56 +199,72 @@ public class FightManager : MonoBehaviour
 
     void Update()
     {
-        if (attackPlayer1 != ' ' && attackPlayer2 != ' ')
+        if (!player1Attack.getIsSelectingAttack() && !player2Attack.getIsSelectingAttack() &&
+            !player1Attack.getIsAttacking() && !player2Attack.getIsAttacking())
         {
-            setAnimTrigger(player1Animator, attackPlayer1, attackPlayer2);
-            setAnimTrigger(player2Animator, attackPlayer2, attackPlayer1);
-            char attackZoneP1 = ' ';
-            char attackZoneP2 = ' ';
-            int damageP1 = 0;
-            int damageP2 = 0;
-            getInfoAttack(ref attackZoneP1, ref damageP1, attackPlayer1);
-            getInfoAttack(ref attackZoneP2, ref damageP2, attackPlayer2);
-
-            if (isAttacking(attackPlayer1))
+            if (player1Attack.getRealAttackCount() == player1Attack.baseAttackCount)
             {
-                if (isAttacking(attackPlayer2))
+                player1Attack.newComboAttack();
+                player2Attack.newComboAttack();
+            }
+            else
+            {
+                attackPlayer1 = player1Attack.getAttackList(player1Attack.getRealAttackCount());
+                attackPlayer2 = player2Attack.getAttackList(player2Attack.getRealAttackCount());
+                char attackZoneP1 = ' ';
+                char attackZoneP2 = ' ';
+                int damageP1 = 0;
+                int damageP2 = 0;
+                getInfoAttack(ref attackZoneP1, ref damageP1, attackPlayer1);
+                getInfoAttack(ref attackZoneP2, ref damageP2, attackPlayer2);
+                if (!player1Attack.canDoThatAttack(attackZoneP1))
                 {
-                    Player1Health.getHit(attackZoneP2, damageP2);
-                    Player2Health.getHit(attackZoneP1, damageP1);
+                    attackPlayer1 = 'n';
                 }
-                else if (attackZoneP1 != attackZoneP2)
+
+                if (!player2Attack.canDoThatAttack(attackZoneP2))
                 {
-                    Player2Health.getHit(attackZoneP1, damageP1);
+                    attackPlayer2 = 'n';
+                }
+
+                setAnimTrigger(player1Animator, attackPlayer1, attackPlayer2);
+                setAnimTrigger(player2Animator, attackPlayer2, attackPlayer1);
+                player1Attack.setIsAttacking(true);
+                player2Attack.setIsAttacking(true);
+                if (isAttacking(attackPlayer1))
+                {
+                    if (isAttacking(attackPlayer2))
+                    {
+                        Player1Health.getHit(attackZoneP2, damageP2);
+                        Player2Health.getHit(attackZoneP1, damageP1);
+                    }
+                    else if (attackZoneP1 != attackZoneP2)
+                    {
+                        Player2Health.getHit(attackZoneP1, damageP1);
+                    }
+                    else
+                    {
+                        float reflect = (float) damageP1;
+                        reflect = Mathf.Floor(reflect / 2);
+                        Player1Health.getHit(attackZoneP1, (int) reflect + 1);
+                    }
+                }
+                else if (isAttacking(attackPlayer2) && attackZoneP1 != attackZoneP2)
+                {
+                    Player2Health.getHit(attackZoneP2, damageP2);
                 }
                 else
                 {
                     float reflect = (float) damageP1;
                     reflect = Mathf.Floor(reflect / 2);
-                    Player1Health.getHit(attackZoneP1, (int) reflect + 1);
+                    Player2Health.getHit(attackZoneP2, (int) reflect + 1);
                 }
-            }
-            else if (isAttacking(attackPlayer2) && attackZoneP1 != attackZoneP2)
-            {
-                Player2Health.getHit(attackZoneP2, damageP2);
-            }
-            else
-            {
-                float reflect = (float) damageP1;
-                reflect = Mathf.Floor(reflect / 2);
-                Player2Health.getHit(attackZoneP2, (int) reflect + 1);
-            }
 
-            attackPlayer1 = ' ';
-            attackPlayer2 = ' ';
+                attackPlayer1 = ' ';
+                attackPlayer2 = ' ';
+                player1Attack.setRealAttackCount(player1Attack.getRealAttackCount() + 1);
+                player2Attack.setRealAttackCount(player2Attack.getRealAttackCount() + 1);
+            }
         }
-
-        /*GG.a = 1f;
-        if (Player1Health.CurrentGlobalHealth >= 0 || Player2Health.CurrentGlobalHealth >= 0 && GG.a==0f)
-        {
-            //Debug.Log("Fail");
-            
-            //T SceneManager.LoadScene("StartScreen");
-        }*/
     }
 }

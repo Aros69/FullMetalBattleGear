@@ -1,23 +1,35 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using UnityEngine;
+using System.Collections;
+using NUnit.Framework;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public int baseAttackCount = 6;
-    public int realAttackCount = 0;
-    public bool isSelectingAttack = true;
+    // Number of attack for the player
+    public readonly int baseAttackCount = 5;
+
+    // Number of attack already chosen for the player
+    private int realAttackCount = 0;
+
+    // Boolean if the player is currently choosing his future attack 
+    private bool isSelectingAttack = true;
+
+    // Boolean if the player is doing an attack
+    private bool isAttacking = false;
+
+    // The list of the player attack
     public char[] attackList;
+
+    // The id of our player
     public int playerId;
 
+    // A reference to the second player
     private GameObject secondPlayer;
-    private Animator player2Animator;
-    private PlayerAttack player2Attack;
-    private Animator anim;
-    private PlayerHealth playerHealth;
 
-    private bool isCoroutineAlreadyRunning = false;
+    // A reference to our animator
+    private Animator anim;
+
+    // A reference to our health
+    private PlayerHealth playerHealth;
 
     // Use this for initialization
     void Start()
@@ -55,17 +67,59 @@ public class PlayerAttack : MonoBehaviour
                 secondPlayer = players[1];
             }
         }
-
-        player2Attack = secondPlayer.GetComponent<PlayerAttack>();
-        player2Animator = secondPlayer.GetComponent<Animator>();
         playerHealth = GetComponent<PlayerHealth>();
         attackList = new char[baseAttackCount];
-        attackList[0] = FightCharTab.Nothing;
-        realAttackCount++;
         anim = GetComponent<Animator>();
     }
 
-    bool canDoThatAttack(char zone)
+    public int getRealAttackCount()
+    {
+        return realAttackCount;
+    }
+
+    public void setRealAttackCount(int newRealAttackCount)
+    {
+        realAttackCount = newRealAttackCount;
+    }
+
+    public bool getIsSelectingAttack()
+    {
+        return isSelectingAttack;
+    }
+
+    public void setIsSelectingAttack(bool newIsSelectingAttack)
+    {
+        isSelectingAttack = newIsSelectingAttack;
+    }
+
+    public bool getIsAttacking()
+    {
+        return isAttacking;
+    }
+
+    public void setIsAttacking(bool newIsAttancking)
+    {
+        isAttacking = newIsAttancking;
+    }
+
+    public char getAttackList(int indexAttack)
+    {
+        return attackList[indexAttack];
+    }
+
+    public void setAttackList(char newAttack, int indexAttack)
+    {
+        attackList[indexAttack] = newAttack;
+    }
+
+    public void newComboAttack()
+    {
+        realAttackCount = 0;
+        isSelectingAttack = true;
+        attackList = new char[baseAttackCount];
+    }
+
+    public bool canDoThatAttack(char zone)
     {
         switch (zone)
         {
@@ -97,6 +151,7 @@ public class PlayerAttack : MonoBehaviour
         return false;
     }
 
+    // TODO Correct UI (en commentaire ActionHolder) 
     void AttackSelection()
     {
         if (Input.GetAxis(InputManager.Input(InputKey.lt, playerId)) > 0 ||
@@ -105,19 +160,19 @@ public class PlayerAttack : MonoBehaviour
             if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.GuardPunch;
-                ActionHolder.main.PlayerActionAdd(Card.CardType.guardPunch, playerId);
+                //ActionHolder.main.PlayerActionAdd(Card.CardType.guardPunch, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.a, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.GuardKick;
-                ActionHolder.main.PlayerActionAdd(Card.CardType.guardKick, playerId);
+                //ActionHolder.main.PlayerActionAdd(Card.CardType.guardKick, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.b, playerId)))
             {
                 attackList[realAttackCount] = FightCharTab.GuardLaser;
-                ActionHolder.main.PlayerActionAdd(Card.CardType.guardLazer, playerId);
+                //ActionHolder.main.PlayerActionAdd(Card.CardType.guardLazer, playerId);
                 realAttackCount++;
             }
         }
@@ -126,31 +181,31 @@ public class PlayerAttack : MonoBehaviour
             if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.LittlePunch;
-                ActionHolder.main.PlayerActionAdd(Card.CardType.littlePunch, playerId);
+                //ActionHolder.main.PlayerActionAdd(Card.CardType.littlePunch, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.rb, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.BigPunch;
-                ActionHolder.main.PlayerActionAdd(Card.CardType.bigPunch, playerId);
+                //ActionHolder.main.PlayerActionAdd(Card.CardType.bigPunch, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.a, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.LittleKick;
-                ActionHolder.main.PlayerActionAdd(Card.CardType.littleKick, playerId);
+                //ActionHolder.main.PlayerActionAdd(Card.CardType.littleKick, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.lb, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.BigKick;
-                ActionHolder.main.PlayerActionAdd(Card.CardType.bigKick, playerId);
+                //ActionHolder.main.PlayerActionAdd(Card.CardType.bigKick, playerId);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.b, playerId)))
             {
                 attackList[realAttackCount] = FightCharTab.Laser;
-                ActionHolder.main.PlayerActionAdd(Card.CardType.lazer, playerId);
+                //ActionHolder.main.PlayerActionAdd(Card.CardType.lazer, playerId);
                 realAttackCount++;
             }
         }
@@ -162,6 +217,7 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    // TODO Correct UI (en commentaire ActionHolder)
     void AttackAuto()
     {
         int numAction = 0;
@@ -175,19 +231,19 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentArmsHealth > 0)
                     {
                         action = FightCharTab.LittlePunch;
-                        ActionHolder.main.PlayerActionAdd(Card.CardType.littlePunch, playerId);
+                        //ActionHolder.main.PlayerActionAdd(Card.CardType.littlePunch, playerId);
                     }
 
                     break;
                 case 1:
                     action = FightCharTab.GuardLaser;
-                    ActionHolder.main.PlayerActionAdd(Card.CardType.guardLazer, playerId);
+                    //ActionHolder.main.PlayerActionAdd(Card.CardType.guardLazer, playerId);
                     break;
                 case 2:
                     if (playerHealth.CurrentLegsHealth > 0)
                     {
                         action = FightCharTab.BigKick;
-                        ActionHolder.main.PlayerActionAdd(Card.CardType.bigKick, playerId);
+                        //ActionHolder.main.PlayerActionAdd(Card.CardType.bigKick, playerId);
                     }
 
                     break;
@@ -195,19 +251,19 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentArmsHealth > 0)
                     {
                         action = FightCharTab.GuardPunch;
-                        ActionHolder.main.PlayerActionAdd(Card.CardType.guardPunch, playerId);
+                        //ActionHolder.main.PlayerActionAdd(Card.CardType.guardPunch, playerId);
                     }
 
                     break;
                 case 4:
                     action = FightCharTab.Laser;
-                    ActionHolder.main.PlayerActionAdd(Card.CardType.lazer, playerId);
+                    //ActionHolder.main.PlayerActionAdd(Card.CardType.lazer, playerId);
                     break;
                 case 5:
                     if (playerHealth.CurrentLegsHealth > 0)
                     {
                         action = FightCharTab.LittleKick;
-                        ActionHolder.main.PlayerActionAdd(Card.CardType.littleKick, playerId);
+                        //ActionHolder.main.PlayerActionAdd(Card.CardType.littleKick, playerId);
                     }
 
                     break;
@@ -215,7 +271,7 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentArmsHealth > 0)
                     {
                         action = FightCharTab.BigPunch;
-                        ActionHolder.main.PlayerActionAdd(Card.CardType.bigPunch, playerId);
+                        //ActionHolder.main.PlayerActionAdd(Card.CardType.bigPunch, playerId);
                     }
 
                     break;
@@ -223,7 +279,7 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentLegsHealth > 0)
                     {
                         action = FightCharTab.GuardKick;
-                        ActionHolder.main.PlayerActionAdd(Card.CardType.guardKick, playerId);
+                        //ActionHolder.main.PlayerActionAdd(Card.CardType.guardKick, playerId);
                     }
 
                     break;
@@ -239,99 +295,29 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    IEnumerator ComboAttack()
-    {
-        isCoroutineAlreadyRunning = true;
-        if (!player2Attack.isSelectingAttack &&
-            anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
-            player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
-        {
-            if (realAttackCount == 0)
-            {
-                StartCoroutine(BattleBar.main.FightSequence(BattleBar.main.FightDuration, BattleBar.main.actions));
-                yield return new WaitForSeconds(1f);
-            }
-
-            if (realAttackCount == baseAttackCount)
-            {
-                realAttackCount = 0;
-                isSelectingAttack = true;
-                attackList = new char[baseAttackCount];
-                attackList[0] = FightCharTab.Nothing;
-            }
-
-            else
-            {
-                char zone = ' ';
-                int temp = 0;
-                FightManager.getInfoAttack(ref zone, ref temp, attackList[realAttackCount]);
-                if (playerId == 0)
-                {
-                    if (canDoThatAttack(zone))
-                    {
-                        FightManager.setAttackPlayer1(attackList[realAttackCount]);
-                    }
-                    else
-                    {
-                        FightManager.setAttackPlayer1('n');
-                    }
-                }
-                else
-                {
-                    if (canDoThatAttack(zone))
-                    {
-                        FightManager.setAttackPlayer2(attackList[realAttackCount]);
-                    }
-                    else
-                    {
-                        FightManager.setAttackPlayer2('n');
-                    }
-                }
-            }
-
-            realAttackCount++;
-        }
-        /*else if (player2Attack.isSelectingAttack &&
-                 anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
-                 player2Animator.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle") &&
-                 realAttackCount == baseAttackCount)
-        {
-            realAttackCount = 0;
-            isSelectingAttack = true;
-            attackList = new char[baseAttackCount];
-            attackList[0] = FightCharTab.Nothing;
-        }*/
-
-        isCoroutineAlreadyRunning = false;
-    }
-
     // Update is called once per frame
     void Update()
     {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("PlayerIdle"))
+        {
+            setIsAttacking(false);
+        }
+
         if (isSelectingAttack)
         {
             if (playerId < 2)
             {
-                AttackSelection();
+                AttackSelection(); // Player
             }
             else
             {
-                AttackAuto();
+                AttackAuto(); // Bot/Computer
             }
         }
-        else
+
+        /*else
         {
-            if (!isCoroutineAlreadyRunning)
-            {
-                StartCoroutine(ComboAttack());
-            }
-        }
+            ComboAttack();
+        }*/
     }
 }
-
-/*if ((SystemInfo.operatingSystem.contains("Windows") &&
-             (Input.GetAxis(InputManager.Input(InputKey.lt, playerId)) > 0 ||
-              Input.GetAxis(InputManager.Input(InputKey.rt, playerId)) > 0)) ||
-            (SystemInfo.operatingSystem.contains("Linux") && 
-                (Input.GetButton(InputManager.Input(InputKey.lt, playerId)) ||
-                Input.GetButton(InputManager.Input(InputKey.rt, playerId)))))*/
