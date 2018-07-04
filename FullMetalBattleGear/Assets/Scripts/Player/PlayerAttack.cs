@@ -4,6 +4,8 @@ using NUnit.Framework;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public ActionBar actionBar;
+    
     // Number of attack for the player
     public readonly int baseAttackCount = 5;
 
@@ -17,14 +19,11 @@ public class PlayerAttack : MonoBehaviour
     private bool isAttacking = false;
 
     // The list of the player attack
-    public char[] attackList;
+    private char[] attackList;
 
     // The id of our player
     public int playerId;
-
-    // A reference to the second player
-    private GameObject secondPlayer;
-
+    
     // A reference to our animator
     private Animator anim;
 
@@ -34,18 +33,9 @@ public class PlayerAttack : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if (name == "Player1")
         {
             playerId = 0;
-            if (players[0].name == "Player1")
-            {
-                secondPlayer = players[1];
-            }
-            else
-            {
-                secondPlayer = players[0];
-            }
         }
         else
         {
@@ -57,16 +47,8 @@ public class PlayerAttack : MonoBehaviour
             {
                 playerId = 2;
             }
-
-            if (players[0].name == "Player1")
-            {
-                secondPlayer = players[0];
-            }
-            else
-            {
-                secondPlayer = players[1];
-            }
         }
+
         playerHealth = GetComponent<PlayerHealth>();
         attackList = new char[baseAttackCount];
         anim = GetComponent<Animator>();
@@ -117,6 +99,7 @@ public class PlayerAttack : MonoBehaviour
         realAttackCount = 0;
         isSelectingAttack = true;
         attackList = new char[baseAttackCount];
+        actionBar.ResetCards();
     }
 
     public bool canDoThatAttack(char zone)
@@ -151,7 +134,7 @@ public class PlayerAttack : MonoBehaviour
         return false;
     }
 
-    // TODO Correct UI (en commentaire ActionHolder) 
+    // TODO improve (function qui fait tout suivant l'action choisis) 
     void AttackSelection()
     {
         if (Input.GetAxis(InputManager.Input(InputKey.lt, playerId)) > 0 ||
@@ -160,19 +143,19 @@ public class PlayerAttack : MonoBehaviour
             if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.GuardPunch;
-                //ActionHolder.main.PlayerActionAdd(Card.CardType.guardPunch, playerId);
+                actionBar.PlayerActionAdd(Card.CardType.guardPunch);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.a, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.GuardKick;
-                //ActionHolder.main.PlayerActionAdd(Card.CardType.guardKick, playerId);
+                actionBar.PlayerActionAdd(Card.CardType.guardKick);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.b, playerId)))
             {
                 attackList[realAttackCount] = FightCharTab.GuardLaser;
-                //ActionHolder.main.PlayerActionAdd(Card.CardType.guardLazer, playerId);
+                actionBar.PlayerActionAdd(Card.CardType.guardLazer);
                 realAttackCount++;
             }
         }
@@ -181,31 +164,31 @@ public class PlayerAttack : MonoBehaviour
             if (Input.GetButtonUp(InputManager.Input(InputKey.x, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.LittlePunch;
-                //ActionHolder.main.PlayerActionAdd(Card.CardType.littlePunch, playerId);
+                actionBar.PlayerActionAdd(Card.CardType.littlePunch);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.rb, playerId)) && playerHealth.CurrentArmsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.BigPunch;
-                //ActionHolder.main.PlayerActionAdd(Card.CardType.bigPunch, playerId);
+                actionBar.PlayerActionAdd(Card.CardType.bigPunch);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.a, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.LittleKick;
-                //ActionHolder.main.PlayerActionAdd(Card.CardType.littleKick, playerId);
+                actionBar.PlayerActionAdd(Card.CardType.littleKick);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.lb, playerId)) && playerHealth.CurrentLegsHealth > 0)
             {
                 attackList[realAttackCount] = FightCharTab.BigKick;
-                //ActionHolder.main.PlayerActionAdd(Card.CardType.bigKick, playerId);
+                actionBar.PlayerActionAdd(Card.CardType.bigKick);
                 realAttackCount++;
             }
             else if (Input.GetButtonUp(InputManager.Input(InputKey.b, playerId)))
             {
                 attackList[realAttackCount] = FightCharTab.Laser;
-                //ActionHolder.main.PlayerActionAdd(Card.CardType.lazer, playerId);
+                actionBar.PlayerActionAdd(Card.CardType.lazer);
                 realAttackCount++;
             }
         }
@@ -217,7 +200,7 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    // TODO Correct UI (en commentaire ActionHolder)
+    // TODO Improve (function qui fait tout suivant l'action choisis)
     void AttackAuto()
     {
         int numAction = 0;
@@ -231,19 +214,19 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentArmsHealth > 0)
                     {
                         action = FightCharTab.LittlePunch;
-                        //ActionHolder.main.PlayerActionAdd(Card.CardType.littlePunch, playerId);
+                        actionBar.PlayerActionAdd(Card.CardType.littlePunch);
                     }
 
                     break;
                 case 1:
                     action = FightCharTab.GuardLaser;
-                    //ActionHolder.main.PlayerActionAdd(Card.CardType.guardLazer, playerId);
+                    actionBar.PlayerActionAdd(Card.CardType.guardLazer);
                     break;
                 case 2:
                     if (playerHealth.CurrentLegsHealth > 0)
                     {
                         action = FightCharTab.BigKick;
-                        //ActionHolder.main.PlayerActionAdd(Card.CardType.bigKick, playerId);
+                        actionBar.PlayerActionAdd(Card.CardType.bigKick);
                     }
 
                     break;
@@ -251,19 +234,19 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentArmsHealth > 0)
                     {
                         action = FightCharTab.GuardPunch;
-                        //ActionHolder.main.PlayerActionAdd(Card.CardType.guardPunch, playerId);
+                        actionBar.PlayerActionAdd(Card.CardType.guardPunch);
                     }
 
                     break;
                 case 4:
                     action = FightCharTab.Laser;
-                    //ActionHolder.main.PlayerActionAdd(Card.CardType.lazer, playerId);
+                    actionBar.PlayerActionAdd(Card.CardType.lazer);
                     break;
                 case 5:
                     if (playerHealth.CurrentLegsHealth > 0)
                     {
                         action = FightCharTab.LittleKick;
-                        //ActionHolder.main.PlayerActionAdd(Card.CardType.littleKick, playerId);
+                        actionBar.PlayerActionAdd(Card.CardType.littleKick);
                     }
 
                     break;
@@ -271,7 +254,7 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentArmsHealth > 0)
                     {
                         action = FightCharTab.BigPunch;
-                        //ActionHolder.main.PlayerActionAdd(Card.CardType.bigPunch, playerId);
+                        actionBar.PlayerActionAdd(Card.CardType.bigPunch);
                     }
 
                     break;
@@ -279,7 +262,7 @@ public class PlayerAttack : MonoBehaviour
                     if (playerHealth.CurrentLegsHealth > 0)
                     {
                         action = FightCharTab.GuardKick;
-                        //ActionHolder.main.PlayerActionAdd(Card.CardType.guardKick, playerId);
+                        actionBar.PlayerActionAdd(Card.CardType.guardKick);
                     }
 
                     break;

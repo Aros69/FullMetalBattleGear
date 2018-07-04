@@ -220,15 +220,19 @@ public class FightManager : MonoBehaviour
                 if (!player1Attack.canDoThatAttack(attackZoneP1))
                 {
                     attackPlayer1 = 'n';
+                    // TODO changer carte pour non attack
                 }
 
                 if (!player2Attack.canDoThatAttack(attackZoneP2))
                 {
                     attackPlayer2 = 'n';
+                    // TODO changer carte pour non attack
                 }
 
                 setAnimTrigger(player1Animator, attackPlayer1, attackPlayer2);
                 setAnimTrigger(player2Animator, attackPlayer2, attackPlayer1);
+                player1Attack.actionBar.Reveal(player1Attack.getRealAttackCount());
+                player2Attack.actionBar.Reveal(player2Attack.getRealAttackCount());
                 player1Attack.setIsAttacking(true);
                 player2Attack.setIsAttacking(true);
                 if (isAttacking(attackPlayer1))

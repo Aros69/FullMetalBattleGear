@@ -4,31 +4,32 @@ using UnityEngine;
 
 public class ActionBar : MonoBehaviour
 {
-    public static ActionBar main;
+    
 
     private Vector2 vect;
 
-    private List<Tiles> playerTiles = new List<Tiles>();
+    //private List<Tiles> playerTiles = new List<Tiles>(playerActions);
+    public Tiles[] playerTiles = new Tiles[playerActions];
 
-    private int actions = 5;
-    private int playerActions = 5;
-    private int playerActionCount;
+    private const int playerActions = 5;
+    private int playerActionCount = 0;
 
-    private void Start()
+    
+
+    public void ResetCards()
     {
-        main = this;
+        for (int i = 0; i < 5; i++)
+        {
+            playerTiles[i].FadeOut();
+        }
+        //main.playerTiles.ForEach(n => n.FadeOut());
+        playerActionCount = 0;
     }
 
-    public static void ResetCards()
+    public void Reveal(int steps)
     {
-        main.playerTiles.ForEach(n => n.FadeOut());
-        main.playerActionCount = 0;
-    }
-
-    public static void Reveal(int steps)
-    {
-        main.playerTiles[steps - 1].image.sprite = main.playerTiles[steps - 1].CurrentCard
-            .TypeIs(main.playerTiles[steps - 1].CurrentCard.cardType);
+        playerTiles[steps].image.sprite = playerTiles[steps].CurrentCard
+            .TypeIs(playerTiles[steps].CurrentCard.cardType);
     }
 
     public void PlayerActionAdd(Card.CardType cardType)
