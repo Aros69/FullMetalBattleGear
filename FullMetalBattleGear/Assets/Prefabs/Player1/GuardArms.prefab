@@ -9,50 +9,49 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1463217124490288}
+  m_RootGameObject: {fileID: 1296660144011930}
   m_IsPrefabParent: 1
---- !u!1 &1463217124490288
+--- !u!1 &1296660144011930
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4726124200488584}
-  - component: {fileID: 212011055039562542}
-  - component: {fileID: 95448397601456762}
-  - component: {fileID: 114019897303209974}
-  - component: {fileID: 114559384053953248}
-  m_Layer: 8
-  m_Name: PlayerIA1
-  m_TagString: Player
+  - component: {fileID: 4133335190497566}
+  - component: {fileID: 114217270439167990}
+  - component: {fileID: 95393503415346782}
+  - component: {fileID: 212994143570927218}
+  m_Layer: 0
+  m_Name: GuardArms
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4726124200488584
+--- !u!4 &4133335190497566
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1463217124490288}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -520, y: -1, z: 2}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_GameObject: {fileID: 1296660144011930}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.1856514, y: -0.14285716, z: -2.8571427}
+  m_LocalScale: {x: 1.4285713, y: 1.4285713, z: 1.4285713}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &95448397601456762
+--- !u!95 &95393503415346782
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1463217124490288}
+  m_GameObject: {fileID: 1296660144011930}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 60c6d255188a9458c9ce97e5dbcbfce8, type: 2}
+  m_Controller: {fileID: 9100000, guid: 345bb975d8bbe054ab5bcf5d966e40cb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -60,45 +59,23 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114019897303209974
+--- !u!114 &114217270439167990
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1463217124490288}
+  m_GameObject: {fileID: 1296660144011930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83421e11c85794651bbd8d037c1a1923, type: 3}
+  m_Script: {fileID: 11500000, guid: de03cfc3fc3eb6447b66d7c914d8964b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionBar: {fileID: 0}
-  playerId: 0
---- !u!114 &114559384053953248
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1463217124490288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a00e4428eb99a4946935e8f161603203, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthBar: {fileID: 0}
-  StartingGlobalHealth: 150
-  CurrentGlobalHealth: 0
-  StartingHeadHealth: 40
-  CurrentHeadHealth: 0
-  StartingLegsHealth: 50
-  CurrentLegsHealth: 0
-  StartingArmsHealth: 30
-  CurrentArmsHealth: 0
---- !u!212 &212011055039562542
+--- !u!212 &212994143570927218
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1463217124490288}
+  m_GameObject: {fileID: 1296660144011930}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -127,7 +104,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 212801f2ba9df4103ae11b0c9c4481ba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0b3d577f96792445dbfaccc9473ac077, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

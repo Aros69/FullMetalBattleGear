@@ -10,26 +10,17 @@ public class FightManager : MonoBehaviour
     // The current attack of player 1 done (space if none)
     private char attackPlayer1 = ' ';
 
+
     // The current attack of player 2 done (space if none)
     private char attackPlayer2 = ' ';
 
     // Reference to it self ?!
     public static FightManager main;
 
-    // Reference to the two palyerq
-    private GameObject[] players;
+    // Reference to Player 1
+    private GameObject player1;
 
-    // Reference to player 1 health
-    private PlayerHealth Player1Health;
-
-    // Reference to player 2 health
-    private PlayerHealth Player2Health;
-
-    // Reference to player 1 animator
-    private Animator player1Animator;
-
-    // Reference to player 2 animator
-    private Animator player2Animator;
+    private GameObject player2;
 
     // Reference to player 1 attack script
     private PlayerAttack player1Attack;
@@ -40,26 +31,21 @@ public class FightManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-        players = GameObject.FindGameObjectsWithTag("Player");
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         if (players[0].name == "Player1")
         {
-            Player1Health = players[0].GetComponent<PlayerHealth>();
-            Player2Health = players[1].GetComponent<PlayerHealth>();
-            player1Animator = players[0].GetComponent<Animator>();
-            player2Animator = players[1].GetComponent<Animator>();
-            player1Attack = players[0].GetComponent<PlayerAttack>();
-            player2Attack = players[1].GetComponent<PlayerAttack>();
+            player1 = players[0];
+            player2 = players[1];
         }
         else
         {
-            Player1Health = players[1].GetComponent<PlayerHealth>();
-            Player2Health = players[0].GetComponent<PlayerHealth>();
-            player1Animator = players[1].GetComponent<Animator>();
-            player2Animator = players[0].GetComponent<Animator>();
-            player1Attack = players[1].GetComponent<PlayerAttack>();
-            player2Attack = players[0].GetComponent<PlayerAttack>();
+            player1 = players[1];
+            player2 = players[0];
         }
+        player1Attack = player1.GetComponent<PlayerAttack>();
+        player2Attack = player2.GetComponent<PlayerAttack>();
 
+        //TODO clean this shit
         main = this;
     }
 
@@ -67,14 +53,14 @@ public class FightManager : MonoBehaviour
     public float DureeAnimation()
     {
         float a = 0;
-        RuntimeAnimatorController rac = player1Animator.runtimeAnimatorController;
+        RuntimeAnimatorController rac = player1.GetComponent<Animator>().runtimeAnimatorController;
         foreach (AnimationClip ac in rac.animationClips)
         {
             if (ac.length > a)
                 a = ac.length;
         }
 
-        rac = player2Animator.runtimeAnimatorController;
+        rac = player2.GetComponent<Animator>().runtimeAnimatorController;
         foreach (AnimationClip ac in rac.animationClips)
         {
             if (ac.length > a)
@@ -229,8 +215,10 @@ public class FightManager : MonoBehaviour
                     // TODO changer carte pour non attack
                 }
 
-                setAnimTrigger(player1Animator, attackPlayer1, attackPlayer2);
-                setAnimTrigger(player2Animator, attackPlayer2, attackPlayer1);
+                AnimationController.setAnimTrigger(player1, attackPlayer1, attackPlayer2);
+                AnimationController.setAnimTrigger(player2, attackPlayer2, attackPlayer1);
+                /*setAnimTrigger(player1.GetComponent<Animator>(), attackPlayer1, attackPlayer2);
+                setAnimTrigger(player2.GetComponent<Animator>(), attackPlayer2, attackPlayer1);*/
                 player1Attack.actionBar.Reveal(player1Attack.getRealAttackCount());
                 player2Attack.actionBar.Reveal(player2Attack.getRealAttackCount());
                 player1Attack.setIsAttacking(true);
@@ -239,29 +227,29 @@ public class FightManager : MonoBehaviour
                 {
                     if (isAttacking(attackPlayer2))
                     {
-                        Player1Health.getHit(attackZoneP2, damageP2);
-                        Player2Health.getHit(attackZoneP1, damageP1);
+                        player1.GetComponent<PlayerHealth>().getHit(attackZoneP2, damageP2);
+                        player2.GetComponent<PlayerHealth>().getHit(attackZoneP1, damageP1);
                     }
                     else if (attackZoneP1 != attackZoneP2)
                     {
-                        Player2Health.getHit(attackZoneP1, damageP1);
+                        player2.GetComponent<PlayerHealth>().getHit(attackZoneP1, damageP1);
                     }
                     else
                     {
                         float reflect = (float) damageP1;
                         reflect = Mathf.Floor(reflect / 2);
-                        Player1Health.getHit(attackZoneP1, (int) reflect + 1);
+                        player1.GetComponent<PlayerHealth>().getHit(attackZoneP1, (int) reflect + 1);
                     }
                 }
                 else if (isAttacking(attackPlayer2) && attackZoneP1 != attackZoneP2)
                 {
-                    Player2Health.getHit(attackZoneP2, damageP2);
+                    player2.GetComponent<PlayerHealth>().getHit(attackZoneP2, damageP2);
                 }
                 else
                 {
                     float reflect = (float) damageP1;
                     reflect = Mathf.Floor(reflect / 2);
-                    Player2Health.getHit(attackZoneP2, (int) reflect + 1);
+                    player2.GetComponent<PlayerHealth>().getHit(attackZoneP2, (int) reflect + 1);
                 }
 
                 attackPlayer1 = ' ';

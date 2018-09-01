@@ -5,80 +5,82 @@ using UnityEngine;
 public class GuardManager : MonoBehaviour
 {
 
-    public Guard guardLegs1;
-    public Guard guardArms1;
-    public Guard guardLazer1;
-
-    public Guard guardLegs2;
-    public Guard guardArms2;
-    public Guard guardLazer2;
-
-    public GameObject spark1;
-    public GameObject spark2;
+    public Guard guardLegs;
+    public Guard guardArms;
+    public Guard guardChest;
 
     public List<Guard> guards = new List<Guard>();
 
-    PlayerHealth player1;
-    PlayerHealth player2;
+    PlayerHealth playerHealth;
 
 
     void Start()
     {
-        guards.Add(guardLegs1);
-        guards.Add(guardArms1);
-        guards.Add(guardLazer1);
+        Guard[] tempGuard = gameObject.GetComponentsInChildren<Guard>();
+        Debug.Log(guardArms);
+        for(int i=0;i<tempGuard.Length;i++){
+            if(tempGuard[0].name=="GuardArms"){
+                guardArms=tempGuard[0];
+            }
+        }
+        for(int i=0;i<tempGuard.Length;i++){
+            if(tempGuard[i].name=="GuardLegs"){
+                guardLegs=tempGuard[i];
+            }
+        }
+        for(int i=0;i<tempGuard.Length;i++){
+            if(tempGuard[i].name=="GuardChest"){
+                guardChest=tempGuard[i];
+            }
+        }
+        Debug.Log(guardArms);
 
-        guards.Add(guardLegs2);
-        guards.Add(guardArms2);
-        guards.Add(guardLazer2);
-
-        guardLegs1.gameObject.SetActive(false);
-        guardArms1.gameObject.SetActive(false);
-        guardLazer1.gameObject.SetActive(false);
-
-        guardLegs2.gameObject.SetActive(false);
-        guardArms2.gameObject.SetActive(false);
-        guardLazer2.gameObject.SetActive(false);
-
+        /*guards.Add(guardLegs);
+        guards.Add(guardArms);
+        guards.Add(guardChest);*/
 
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Player");
-
         if (temp[0].name == "Player1")
         {
-            player1 = temp[0].GetComponent<PlayerHealth>();
-            player2 = temp[1].GetComponent<PlayerHealth>();
+            playerHealth = temp[0].GetComponent<PlayerHealth>();
         }
-
         else
         {
-            player1 = temp[1].GetComponent<PlayerHealth>();
-            player2 = temp[0].GetComponent<PlayerHealth>();
+            playerHealth = temp[1].GetComponent<PlayerHealth>();
         }
 
     }
 
+    public void setGuardPunch(){
+        guardArms.gameObject.SetActive(true);
+        guardArms.Play();
+        guardArms.Invoke("Stop", 0.5f);
+    }
+    public void setGuardKick(){
+        guardLegs.gameObject.SetActive(true);
+        guardLegs.Play();
+        guardLegs.Invoke("Stop", 0.5f);
+    }
+    public void setGuardLaser(){
+        guardChest.gameObject.SetActive(true);
+        guardChest.Play();
+        guardChest.Invoke("Stop", 0.5f);
+    }
+
     private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O))
+    {   
+        /*if (Input.GetKeyDown(KeyCode.O))
         {
             SpawnGuard(0, FightCharTab.GuardPunch);
-        }
+        }*/
 
-        float a = player1.CurrentGlobalHealth;
-        float b = player1.StartingGlobalHealth;
+        /*float a = playerHealth.CurrentGlobalHealth;
+        float b = playerHealth.StartingGlobalHealth;
 
         if (a / b < 0.5f)
         {
-            spark1.SetActive(true);
-        }
-
-        a = player2.CurrentGlobalHealth;
-        b = player2.StartingGlobalHealth;
-
-        if (a/ b< 0.5)
-        {
-            spark2.SetActive(true);
-        }
+            spark.SetActive(true);
+        }*/
     }
     public void SpawnGuard(int playerId, char attack)
     {

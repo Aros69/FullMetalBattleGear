@@ -8,6 +8,7 @@ public class Guard : MonoBehaviour {
     int play;
 
     void Start () {
+        gameObject.SetActive(false);
         animator = GetComponent<Animator>();
         play = Animator.StringToHash("Play");
 

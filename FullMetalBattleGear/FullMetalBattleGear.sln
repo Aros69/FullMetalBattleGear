@@ -1,9 +1,7 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{26695578-5048-F0FF-DE9F-12D23C0349A3}"
-EndProject
-Project("{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1}") = "Assembly-CSharp-Editor-firstpass", "Assembly-CSharp-Editor-firstpass.csproj", "{D5FABAC4-2175-EDE1-DCAD-70EF1EC51432}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullMetalBattleGear", "Assembly-CSharp.csproj", "{26695578-5048-F0FF-DE9F-12D23C0349A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +13,6 @@ Global
 		{26695578-5048-F0FF-DE9F-12D23C0349A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26695578-5048-F0FF-DE9F-12D23C0349A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26695578-5048-F0FF-DE9F-12D23C0349A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5FABAC4-2175-EDE1-DCAD-70EF1EC51432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5FABAC4-2175-EDE1-DCAD-70EF1EC51432}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5FABAC4-2175-EDE1-DCAD-70EF1EC51432}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5FABAC4-2175-EDE1-DCAD-70EF1EC51432}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

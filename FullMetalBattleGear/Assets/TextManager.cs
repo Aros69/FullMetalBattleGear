@@ -19,7 +19,7 @@ public class TextManager : MonoBehaviour {
 
     void Start () {
         images = new List<Image>(guard.GetComponentsInChildren<Image>());
-        
+
         Invoke("LateStart",0.1f);
     }
 

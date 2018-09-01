@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$USER_HOME$/.Rider2017.3/system/resharper-host/local/Transient/ReSharperHost/v11/SolutionCaches/_FullMetalBattleGear.-1740378304.00" t="ExcludeRecursive" />
+    <e p="/5943e65c" t="IncludeRecursive" />
+    <e p="/app" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2018.2/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2018.2/system/resharper-host/local/Transient/ReSharperHost/v182/SolutionCaches/_FullMetalBattleGear.-1740378304.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeRecursive">
       <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
-      <e p="Assets" t="Include">
-        <e p="ButtonsManager.cs" t="Include" />
-        <e p="Plugins" t="Include">
-          <e p="Editor" t="Include">
-            <e p="JetBrains" t="Include">
-              <e p="Unity3DRider.cs" t="Include" />
-            </e>
+      <e p="Assets/ButtonsManager.cs" t="Include" />
+      <e p="Assets/Plugins" t="Include">
+        <e p="Editor" t="Include">
+          <e p="JetBrains" t="Include">
+            <e p="Unity3DRider.cs" t="Include" />
           </e>
         </e>
-        <e p="Scripts" t="Include">
-          <e p="Fight" t="Include">
-            <e p="FightCharTab.cs" t="Include" />
-            <e p="FightManager.cs" t="Include" />
-          </e>
-          <e p="Player" t="Include">
-            <e p="Guard.cs" t="Include" />
-            <e p="GuardManager.cs" t="Include" />
-            <e p="InputManager.cs" t="Include" />
-            <e p="PlayerAttack.cs" t="Include" />
-            <e p="PlayerHealth.cs" t="Include" />
-          </e>
-          <e p="UI" t="Include">
-            <e p="ActionBar.cs" t="Include" />
-            <e p="ActionHolder.cs" t="Include" />
-            <e p="BattleBar.cs" t="Include" />
-            <e p="Card.cs" t="Include" />
-            <e p="ChangeScene.cs" t="Include" />
-            <e p="CloudsMovement.cs" t="Include" />
-            <e p="DontDestroyOnLoad.cs" t="Include" />
-            <e p="HealthBar.cs" t="Include" />
-            <e p="InputMenu.cs" t="Include" />
-            <e p="Tiles.cs" t="Include" />
-          </e>
-        </e>
-        <e p="TextManager.cs" t="Include" />
       </e>
+      <e p="Assets/Scripts" t="Include">
+        <e p="Fight" t="Include">
+          <e p="FightCharTab.cs" t="Include" />
+          <e p="FightManager.cs" t="Include" />
+        </e>
+        <e p="Player" t="Include">
+          <e p="Guard.cs" t="Include" />
+          <e p="GuardManager.cs" t="Include" />
+          <e p="InputManager.cs" t="Include" />
+          <e p="PlayerAttack.cs" t="Include" />
+          <e p="PlayerHealth.cs" t="Include" />
+        </e>
+        <e p="UI" t="Include">
+          <e p="ActionBar.cs" t="Include" />
+          <e p="ActionHolder.cs" t="Include" />
+          <e p="BattleBar.cs" t="Include" />
+          <e p="Card.cs" t="Include" />
+          <e p="ChangeScene.cs" t="Include" />
+          <e p="CloudsMovement.cs" t="Include" />
+          <e p="DontDestroyOnLoad.cs" t="Include" />
+          <e p="HealthBar.cs" t="Include" />
+          <e p="InputMenu.cs" t="Include" />
+          <e p="Tiles.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Assets/TextManager.cs" t="Include" />
       <e p="FullMetalBattleGear.sln" t="IncludeFlat" />
       <e p="Library" t="ExcludeRecursive" />
       <e p="Temp" t="ExcludeRecursive">
