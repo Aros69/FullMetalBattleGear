@@ -82,7 +82,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: ArmsGuardRobot2
-  m_Speed: 0.5
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101271221010565282}
@@ -95,7 +95,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 6d58c738b1b3a3a47a2d05ea4a14389a, type: 2}
+  m_Motion: {fileID: 7400000, guid: 2d4796e6b1762f549a9abfb5fb70acc7, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -121,7 +121,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 6d58c738b1b3a3a47a2d05ea4a14389a, type: 2}
+  m_Motion: {fileID: 7400000, guid: 2d4796e6b1762f549a9abfb5fb70acc7, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
